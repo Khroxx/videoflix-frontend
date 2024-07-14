@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: DM Sans;
+    src: url(assets/font/DM_Sans/DMSans-VariableFont_opsz\,wght.ttf);
+}
+
+*{
+    font-family: 'DM Sans', 'arial', sans-serif;
+}
+
+.btn{
+    background-color: #2E3EDF;
+    line-height: 23.44px;
+    font-weight: 700;
+    color: white;
+    height: 48px;
+    border: unset;
+    border-radius: 40px;
+    padding: 12px 24px;
+    gap: 10px;
+    cursor: pointer;
+    &:hover{
+        background-color: #4e5adf;
+    }
+}
