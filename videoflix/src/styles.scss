@@ -6,10 +6,23 @@
 
 *{
     font-family: 'DM Sans', 'arial', sans-serif;
+    margin: 0;
 }
-
+:root{
+    --purple: #2E3EDF
+}
+h1, h2, h3, p, span{
+    color: white;
+}
+.errorMsg{
+    color: red;
+    font-size: 18px;
+}
 .btn{
     background-color: #2E3EDF;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
     line-height: 23.44px;
     font-weight: 700;
     color: white;
@@ -22,4 +35,78 @@
     &:hover{
         background-color: #4e5adf;
     }
+}
+.w-input{
+    width: 360px;
+    display: flex;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid white;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 23.44px;
+    padding: 12px 24px;
+    color: white;
+    cursor: text;
+    background-color: rgba(0,0,0,0);
+    &::placeholder{
+        color: white;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 23.44px;
+    }
+    &:hover{
+        border: 1px solid rgb(187, 187, 187);
+    }
+    &:focus{
+        outline: none;
+    }
+}
+.p-input{
+    display: flex;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid #2E3EDF;
+    gap: 10px;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 23.44px;
+    padding: 12px 24px;
+    color: #2E3EDF;
+    cursor: text;
+    background-color: rgba(0,0,0,0);
+    &::placeholder{
+        color: #2E3EDF;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 23.44px;
+    }
+    &:hover{
+        border: 1px solid #4450d8;
+    }
+    &:focus{
+        outline: none;
+    }
+}
+.p-link{
+    color: #2E3EDF;
+    text-decoration: none;
+    &:hover{
+        color: #606ad3;
+    }
+}
+.link{
+    color: white;
+    text-decoration: none;
+    &:hover{
+        color: #2E3EDF;
+    }
+}
+
+app-login, app-forgot-password, app-signup, app-reset-password{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
 }

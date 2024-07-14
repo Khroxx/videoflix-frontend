@@ -1,1 +1,19 @@
-<p>signup works!</p>
+<div class="signup-container">
+    <h1>Sign Up</h1>
+    <form action="">
+        <input id="email" class="p-input" type="email" placeholder="Email Adress">
+        @if(emailError){
+            <p class="errorMsg">Soemthing went wrong with this email adress</p>
+        }
+        <input id="password" class="p-input" type="password" placeholder="Enter a password">
+        @if(passError){
+            <p class="errorMsg">Password is too weak</p>
+        }
+        <input id="password-confirm" class="p-input" type="password" placeholder="Confirm password">
+        @if(againError){
+            <p class="errorMsg"><img src="img/warning.png" alt="">Passwords must match</p>
+        }
+        <button class="btn">Get Started</button>
+    </form>
+    
+</div>

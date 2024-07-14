@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './signup.component.scss'
 })
 export class SignupComponent {
-
+  emailError:boolean = false;
+  passError:boolean = false;
+  againError:boolean = false;
 }
