@@ -3,7 +3,7 @@
     <form (ngSubmit)="createUser()">
         <input id="email" name="email" class="p-input" type="email" placeholder="Email Adress" [(ngModel)]="email">
         @if(emailError){
-            <p class="errorMsg">Soemthing went wrong with this email adress</p>
+            <p class="errorMsg">This Email is already registered. Please login.</p>
         }
         <input id="password" name="password1" class="p-input" type="password" placeholder="Enter a password" [(ngModel)]="password1">
         <input id="password-confirm" name="password2" class="p-input" type="password" placeholder="Confirm password" [(ngModel)]="password2">

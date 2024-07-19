@@ -1,21 +1,21 @@
 <div class="login-container">
     <h1>Log in</h1>
     <form action="">
-        <input type="email" placeholder="Email Adress" class="p-input">
+        <input type="email" placeholder="Email Adress" [(ngModel)]="email" name="email" class="p-input">
         @if(wrongEmail){
-            <p class="errorMsg"></p>
+            <p class="errorMsg">This Email is not registered.</p>
         }
-        <input type="password" name="login-pw" id="login-pw" placeholder="Password" class="p-input">
+        <input type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
         @if(wrongPw){
-            <p class="errorMsg"></p>
+            <p class="errorMsg">Password does not match the email!</p>
         }
     </form>
     <div class="remember-container">
         <input type="checkbox">
         <p class="remember">Remember Me</p>
     </div>
-    <button [disabled]="" class="btn">Log in</button>
-    <a href="" class="forgotpw">Forgot password?</a>
+    <button [disabled]="" (click)="login()" class="btn">Log in</button>
+    <a href="welcome/forgot-password" class="forgotpw">Forgot password?</a>
     <div class="signup-container">
         <p>New to Videoflix</p>
         <a href="welcome/signup">Sign Up now</a>

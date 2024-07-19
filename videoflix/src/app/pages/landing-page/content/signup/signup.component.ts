@@ -3,8 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { User } from '../../../../interfaces/user';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
@@ -28,8 +26,7 @@ export class SignupComponent {
     private router: Router,
     private route: ActivatedRoute,
     private sharedService: SharedFunctionsService,
-    private http: HttpClient,
-    private authUser: AuthService
+    private authService: AuthService
   ){}
 
   ngOnInit(): void {
@@ -41,37 +38,27 @@ export class SignupComponent {
     this.sharedService.updateBackgroundImage('img/signup.jpeg')
   }
 
-  createUser(){
-    if (this.password1 !== '' && this.password1 === this.password2 && this.emailError === false){
-      this.sentVerificationEmail();
+  async createUser(){
+    if (this.password1 !== '' && this.password1 === this.password2){
+      this.authService.emailExists(this.email).then(exists => {
+        if (!exists) {
+          this.sendVerificationEmail();
+        } else {
+          this.emailError = true;
+        }})
     } if (this.password1 !== this.password2){
-      this.againError = true
+      this.againError = true;
     }
   }
 
-  async sentVerificationEmail(){
+
+
+  async sendVerificationEmail(){
     this.emailError  = false;
     this.againError = false;
     this.emailSent = true;
-    let resp:any = await this.authUser.registerUser(this.email, this.password1);
-    console.log(resp)
+    let resp:any = await this.authService.registerUser(this.email, this.password1);
 
     this.router.navigate(['welcome/login'])
   }
-
-  // emailExists(): void {
-  //   this.http.get<User[]>('http://127.0.0.1:8000/users/').subscribe({
-  //     next: (users) => {
-  //       let exists = users.some(user => user.email === this.email);
-  //       if (exists) {
-  //         this.emailError = true;
-  //       } else {
-  //         this.emailError = false;
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Fehler beim Abrufen der Benutzerdaten:', err);
-  //     }
-  //   });
-  // }
 }

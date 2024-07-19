@@ -24,8 +24,29 @@ export class AuthService {
 
   public getUsers(){
     const url = environment.baseUrl + '/users/';
-    const allUsers = this.http.get(url).subscribe;
+    const allUsers = this.http.get<User[]>(url).subscribe;
     return allUsers
+  }
+
+  public emailExists(email: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.http.get<User[]>('http://127.0.0.1:8000/users/').subscribe({
+        next: (users) => {
+          let exists = users.some(user => user.email === email);
+          resolve(exists);
+        },
+        error: (error) => reject(error)
+      });
+    });
+  }
+
+  async loginUser(email: string, password: string){
+    const url = environment.baseUrl + '/login/';
+    const body = {
+      "email": email,
+      "password": password
+    }
+    this.http.post<User[]>(url, body)
   }
 
   ngOnDestroy(): void {

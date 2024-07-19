@@ -7,6 +7,8 @@ import { SignupComponent } from './pages/landing-page/content/signup/signup.comp
 import { ForgotPasswordComponent } from './pages/landing-page/content/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './pages/landing-page/content/reset-password/reset-password.component';
 import { VideoplayerComponent } from './pages/videoplayer/videoplayer.component';
+import { ImprintComponent } from './shared/imprint/imprint.component';
+import { PrivacyPolicyComponent } from './shared/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -23,5 +25,10 @@ export const routes: Routes = [
     { path: 'videos', component: VideoOffersComponent, children: [
         { path: 'watching', component: VideoplayerComponent }
     ] },
-
+    { path: 'info', children:
+        [
+            { path: 'imprint', component: ImprintComponent },
+            { path: 'privacy-policy', component: PrivacyPolicyComponent}
+        ]
+    }
 ];
