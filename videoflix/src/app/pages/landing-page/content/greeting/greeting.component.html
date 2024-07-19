@@ -3,7 +3,7 @@
     <h2>Watch whenever you want wherever you want</h2>
     <h3>Enter your email to create or restart your subscription</h3>
     <div class="input-container">
-        <input class="w-input" type="email" placeholder="Email Address">
-        <button class="btn">Sign Up <img src="img/right.png" alt=""></button>
+        <input class="w-input" type="email" placeholder="Email Address" [(ngModel)]="email">
+        <button class="btn" (click)="navigateToSignUp()">Sign Up <img src="img/right.png" alt=""></button>
     </div>
 </div>

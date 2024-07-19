@@ -12,8 +12,8 @@ export const routes: Routes = [
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
     { path: 'welcome', component: LandingPageComponent, 
         children: [
-            { path: '', redirectTo: 'greet', pathMatch: 'full'},
-            { path: 'greet', component: GreetingComponent },
+            // { path: '', redirectTo: 'greet', pathMatch: 'full'},
+            { path: '', component: GreetingComponent },
             { path: 'login', component: LoginComponent },
             { path: 'signup', component: SignupComponent },
             { path: 'forgot-password', component: ForgotPasswordComponent },

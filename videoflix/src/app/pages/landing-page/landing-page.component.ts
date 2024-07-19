@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
-import { Router, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { SharedFunctionsService } from '../../services/shared-functions.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-landing-page',
@@ -11,22 +13,28 @@ import { Router, RouterOutlet } from '@angular/router';
   styleUrl: './landing-page.component.scss'
 })
 export class LandingPageComponent {
-  backgroundImg = 'img/greet.jpeg';
+  backgroundImg: string = 'img/greet.jpeg';
+  private imgSubscription!: Subscription;
 
-  constructor(private router: Router){}
+
+  constructor(
+    private sharedService: SharedFunctionsService,
+    private changeDetectorRef: ChangeDetectorRef
+  ){}
 
   ngOnInit(): void {
-    this.updateBackgroundImage();
+    this.imgSubscription = this.sharedService.currentBackgroundImage.subscribe(img => {
+      this.backgroundImg = img;
+      this.changeDetectorRef.detectChanges();
+    });
 
   }
 
-  updateBackgroundImage() {
-    if (this.router.url.includes('/login') || this.router.url.includes('/forgot-password')) {
-      this.backgroundImg = 'img/login.jpeg';
-    } else if (this.router.url.includes('/signup')) {
-      this.backgroundImg = 'img/signup.jpeg';
-    } else {
-      this.backgroundImg = 'img/greet.jpeg';
-    }
+
+
+  ngOnDestroy(): void {
+    this.imgSubscription.unsubscribe();
   }
+
+
 }
