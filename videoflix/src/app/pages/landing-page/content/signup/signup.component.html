@@ -1,6 +1,6 @@
 <div class="signup-container">
     <h1>Sign Up</h1>
-    <form (ngSubmit)="createUser()">
+    <form (ngSubmit)="createUser()" #signupForm="ngForm">
         <input id="email" name="email" class="p-input" type="email" placeholder="Email Adress" [(ngModel)]="email">
         @if(emailError){
             <p class="errorMsg">This Email is already registered. Please login.</p>
@@ -10,7 +10,7 @@
         @if(againError){
             <p class="errorMsg"><img src="img/warning.png" alt="">Passwords must match</p>
         }
-        <button class="btn" type="submit">Get Started</button>
+        <button [disabled]="!email || !password1 || !password2" class="btn" type="submit">Get Started</button>
     </form>
     
 </div>

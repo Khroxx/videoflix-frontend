@@ -1,4 +1,7 @@
 <header>
     <img src="img/logo.png" alt="Logo">
-    <button class="btn" (click)="navigateToLogin()">Log in</button>
+    @if(!isLoginRoute){
+        <button class="btn" (click)="navigateToLogin()">Log in</button>
+    }
+    
 </header>

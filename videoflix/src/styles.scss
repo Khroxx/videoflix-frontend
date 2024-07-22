@@ -15,8 +15,9 @@ h1, h2, h3, p, span{
     color: white;
 }
 .errorMsg{
-    color: red;
-    font-size: 18px;
+    color: red !important;
+    font-size: 16px;
+    position: absolute;
 }
 .btn{
     background-color: #2E3EDF;
@@ -35,9 +36,15 @@ h1, h2, h3, p, span{
     &:hover{
         background-color: #4e5adf;
     }
+    &:disabled{
+        background-color: #A5A5A5;
+        color: #CCCCCC;
+        cursor: not-allowed;
+    }
 }
 .w-input{
     width: 360px;
+    position: relative;
     display: flex;
     align-items: center;
     border-radius: 40px;

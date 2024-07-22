@@ -17,4 +17,9 @@ export class HeaderComponent {
   navigateToLogin(){
     this.router.navigate(['welcome/login'])
   }
+
+  get isLoginRoute(){
+    return this.router.url.includes('login')
+  }
 }
+
