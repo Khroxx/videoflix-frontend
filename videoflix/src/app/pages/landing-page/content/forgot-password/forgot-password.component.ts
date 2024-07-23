@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ForgotPasswordComponent {
   wrongEmail: boolean = false;
-  passwordChanged: boolean = false
+  passwordChanged: boolean = false;
   email: string = '';
 
   constructor(
@@ -31,8 +31,6 @@ export class ForgotPasswordComponent {
       if (exists) {
         await this.authService.fetchCSRFToken();
         let userData: any = await this.authService.sendPasswordResetEmail(this.email);
-        // localStorage.setItem('token', userData);
-        // console.log(userData)
         this.passwordChanged = true;
       } else {
         this.passwordChanged = false;

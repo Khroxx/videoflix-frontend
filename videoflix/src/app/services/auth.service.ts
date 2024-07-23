@@ -4,7 +4,6 @@ import { environment } from '../../environments/environment.development';
 import { lastValueFrom } from 'rxjs';
 import { User } from '../interfaces/user';
 import { HttpHeaders } from '@angular/common/http';
-import { error } from 'console';
 
 
 @Injectable({
@@ -46,15 +45,15 @@ export class AuthService {
       "email": email
     }
     return lastValueFrom(this.http.post<User[]>(url, body))
-    // const csrfToken = localStorage.getItem('csrf-token');
-    // if (csrfToken){
-    //   const headers = new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'X-CSRFToken': csrfToken
-    //   })
-      // return lastValueFrom(this.http.post<User>(url, body, { headers: headers}))
-    // }
-    // return console.log('did not work')
+  }
+
+  public async changePassword(userId: string, newPassword: string){
+    const url = environment.baseUrl + `/users/${userId}/`;
+    const body = {
+      "password": newPassword
+    }
+    return lastValueFrom(this.http.put(url, body))
+    
   }
 
   public getUsers(){
@@ -75,10 +74,7 @@ export class AuthService {
     }
   }
 
-  public getVideos(){
-    const url = environment.baseUrl + '/videos/';
-    this.http.get(url)
-  }
+
 
   public emailExists(email: string): Promise<boolean> {
     return new Promise((resolve, reject) => {

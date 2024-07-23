@@ -7,7 +7,7 @@
     align-items: center;
     width: 520px;
     border-radius: 48px;
-    gap: 32px;
+    gap: 40px;
     padding: 43px 56px;
     background-color: white;
 }
@@ -17,11 +17,25 @@ h1{
     font-size: 48px;
     line-height: 62.5px;
 }
+
 form{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 16px;
+    gap: 30px;
     width: 100%;
+    input{
+        width: 90%;
+        border-radius: 12px;
+    }
+    >div {
+        position: relative;
+        width: 100%;
+        >p{
+            position: absolute;
+            color: black;
+            font-size: 16px;
+        }
+    }
 }

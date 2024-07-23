@@ -1,17 +1,21 @@
 <div class="login-container">
     <h1>Log in</h1>
     <form #loginForm="ngForm">
-        <input type="email" placeholder="Email Adress" [(ngModel)]="email" name="email" class="p-input">
-        @if(wrongEmail){
-            <p class="errorMsg">This Email is not registered.</p>
-        }
-        @if(activatedMsg){
-            <p class="errorMsg">Your account is not activated. Please follow the email we sent you.</p>
-        }
-        <input type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
-        @if(wrongPw){
-            <p class="errorMsg">Password does not match the email!</p>
-        }
+        <div>
+            <input type="email" placeholder="Email Adress" [(ngModel)]="email" name="email" class="p-input">
+            @if(wrongEmail){
+                <p class="errorMsg">This Email is not registered.</p>
+            }
+            @if(activatedMsg){
+                <p class="errorMsg">Your account is not activated. Please follow the email we sent you.</p>
+            }
+        </div>
+        <div>
+            <input type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
+            @if(wrongPw){
+                <p class="errorMsg">Password does not match the email!</p>
+            }
+        </div>
     </form>
     <div class="remember-container">
         <input type="checkbox">

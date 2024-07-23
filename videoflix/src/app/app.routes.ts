@@ -19,7 +19,8 @@ export const routes: Routes = [
             { path: 'login', component: LoginComponent },
             { path: 'signup', component: SignupComponent },
             { path: 'forgot-password', component: ForgotPasswordComponent },
-            { path: 'reset-password', component: ResetPasswordComponent },
+            { path: 'reset-password/:userId', component: ResetPasswordComponent },
+            { path: 'reset-password', component: ResetPasswordComponent }, // fürs testen
         ]
     },
     { path: 'videos', component: VideoOffersComponent, children: [

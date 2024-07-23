@@ -24,9 +24,16 @@ form{
     justify-content: center;
     align-items: center;
     gap: 32px;
-    >input{
-        width: 90%;
 
+    >div{
+        position: relative;
+        width: 100%;
+        >input{
+            width: 90%;
+        }
+        >p{
+            position: absolute;
+        }
     }
 }
 .remember-container{

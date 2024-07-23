@@ -48,6 +48,7 @@ export class SignupComponent {
         }})
     } if (this.password1 !== this.password2){
       this.againError = true;
+      this.emailError = false;
     }
   }
 
@@ -57,8 +58,9 @@ export class SignupComponent {
     this.emailError  = false;
     this.againError = false;
     this.emailSent = true;
-    let resp:any = await this.authService.registerUser(this.email, this.password1);
-
-    this.router.navigate(['welcome/login'])
+    let resp: any = await this.authService.registerUser(this.email, this.password1);
+    setTimeout(() => {
+      this.router.navigate(['welcome/login'])
+    }, 2000);
   }
 }

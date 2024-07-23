@@ -1,16 +1,23 @@
 <div class="signup-container">
     <h1>Sign Up</h1>
-    <form (ngSubmit)="createUser()" #signupForm="ngForm">
-        <input id="email" name="email" class="p-input" type="email" placeholder="Email Adress" [(ngModel)]="email">
-        @if(emailError){
-            <p class="errorMsg">This Email is already registered. Please login.</p>
-        }
+    <form #signupForm="ngForm">
+        <div>
+            <input id="email" name="email" class="p-input" type="email" placeholder="Email Adress" [(ngModel)]="email">
+            @if(emailError){
+                <p class="errorMsg">This Email is already registered. Please login.</p>
+            }
+        </div>
         <input id="password" name="password1" class="p-input" type="password" placeholder="Enter a password" [(ngModel)]="password1">
-        <input id="password-confirm" name="password2" class="p-input" type="password" placeholder="Confirm password" [(ngModel)]="password2">
-        @if(againError){
-            <p class="errorMsg"><img src="img/warning.png" alt="">Passwords must match</p>
-        }
-        <button [disabled]="!email || !password1 || !password2" class="btn" type="submit">Get Started</button>
+        <div>
+            <input id="password-confirm" name="password2" class="p-input" type="password" placeholder="Confirm password" [(ngModel)]="password2">
+            @if(againError){
+                <p class="errorMsg"><img src="img/warning.png" alt="">Passwords must match</p>
+            }
+            @if (emailSent){
+                <p>A verification email has been sent to you. Please check your inbox or Junk folder</p>
+            }
+        </div>
     </form>
+    <button [disabled]="!email || !password1 || !password2" class="btn" (click)="createUser()">Get Started</button>
     
 </div>
