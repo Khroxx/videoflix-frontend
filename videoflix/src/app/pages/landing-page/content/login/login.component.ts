@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
 
@@ -15,6 +15,7 @@ export class LoginComponent {
   wrongEmail: boolean = false;
   wrongPw: boolean = false;
   activatedMsg: boolean = false;
+  activated: boolean = false;
 
   email: string = '';
   password: string = '';
@@ -22,12 +23,17 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private sharedService: SharedFunctionsService
-
+    private sharedService: SharedFunctionsService,
+    private route: ActivatedRoute
   ){}
 
   ngOnInit(): void {
     this.sharedService.updateBackgroundImage('img/login.jpeg');
+    this.route.queryParams.subscribe(params => {
+      if (params['activated']) {
+        this.activated = params['activated'] === 'true';
+      }
+    });
   }
 
   login(){

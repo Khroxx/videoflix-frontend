@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
 
 @Component({
@@ -17,11 +17,12 @@ export class GreetingComponent {
 
   constructor(
     private router: Router,
-    private sharedService: SharedFunctionsService
+    private sharedService: SharedFunctionsService,
   ){}
 
   ngOnInit(): void {
-    this.sharedService.updateBackgroundImage('img/greet.jpeg')
+    this.sharedService.updateBackgroundImage('img/greet.jpeg');
+
   }
 
   // Send User to SignUp page

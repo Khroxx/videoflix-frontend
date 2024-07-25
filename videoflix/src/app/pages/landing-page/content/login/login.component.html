@@ -3,6 +3,9 @@
     <form #loginForm="ngForm">
         <div>
             <input type="email" placeholder="Email Adress" [(ngModel)]="email" name="email" class="p-input">
+            @if(activated){
+                <p class="black">Your account has been activated, please log in</p>
+            }
             @if(wrongEmail){
                 <p class="errorMsg">This Email is not registered.</p>
             }
