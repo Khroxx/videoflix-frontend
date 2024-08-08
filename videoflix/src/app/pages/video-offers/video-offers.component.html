@@ -4,51 +4,38 @@
         <button class="btn" (click)="logout()"><img src="img/logout.png" alt="">Log Out</button>
     </header>
 
-    <div class="video-preview">
-        <img src="img/login.jpeg" alt="">
-
+    <div class="video-preview" #previewThumbnail>
+        <img [src]="currentPreviewThumbnail" alt="">
     </div>
 
     <div class="info-container">
         <div class="preview-info">
-            <!-- <h1>{{ movie.title }}</h1> -->
-            <h1 class="headline">Movie Title</h1>
-            <!-- <p class="description">{{ movie.description }}</p> -->
-            <p class="description">In a high-security prison, a wrongly convicted man formulates a meticulous plan to break out and prove his innocence. He must navigate a web of alliances and betrayals to reclaim his freedom and expose the truth.</p>
-            <button class="play-btn btn" (click)="playPreview()"><img src="img/play_arrow.png" alt=""> Play</button>
+            <h1 #headline>{{ currentPreview.title }}</h1>
+            <p class="description" #description>{{ currentPreview.description }}</p>
+            <button #previewButton class="play-btn btn" (click)="playPreview(currentPreview.id)"><img src="img/play_arrow.png" alt=""> Play</button>
         </div>
     </div>
 
     <div class="videos">
         <div class="video-content">
             <h2>New on Videoflix</h2>
-            <div class="thumbnails">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
+            <div class="thumbnails" #newOnVideoflix>
             </div>
         </div>
         <div class="video-content">
             <h2>Documentary</h2>
-            <div class="thumbnails">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
+            <div class="thumbnails" #documentary>
             </div>
         </div>
         <div class="video-content">
             <h2>Drama</h2>
-            <div class="thumbnails">
-                <img src="img/login.jpeg" alt="">
+            <div class="thumbnails" #drama>
+                
             </div>
         </div>
         <div class="video-content">
             <h2>Romance</h2>
-            <div class="thumbnails">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
-                <img src="img/login.jpeg" alt="">
+            <div class="thumbnails" #romance>
             </div>
         </div>
     </div>

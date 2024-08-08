@@ -1,3 +1,3 @@
 export const environment = {
-    baseUrl: 'https://bari-sopa.com/projects/videoflix'
+    baseUrl: 'https://api.bari-sopa.com'
 };

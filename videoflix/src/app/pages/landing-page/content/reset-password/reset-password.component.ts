@@ -31,7 +31,6 @@ export class ResetPasswordComponent {
     this.sharedService.updateBackgroundImage('img/login.jpeg')
     this.route.queryParams.subscribe(params => {
       this.userId = params['user'];
-      // console.log("User PK: ", this.userId);
     });
   }
 

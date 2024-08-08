@@ -24,7 +24,7 @@ export const routes: Routes = [
         ]
     },
     { path: 'videos', component: VideoOffersComponent, children: [
-        { path: 'watching', component: VideoplayerComponent }
+        { path: 'watching/:id', component: VideoplayerComponent }
     ] },
     { path: 'info', children:
         [

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment.development';
+// import { devEnvironment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { lastValueFrom } from 'rxjs';
 import { User } from '../interfaces/user';
 import { HttpHeaders } from '@angular/common/http';
@@ -11,6 +12,8 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AuthService {
   // csrfToken: string = '';
+  // const headers = { 'Contect-Type': 'application/json'};
+
 
   constructor(private http: HttpClient) { }
 
@@ -32,10 +35,6 @@ export class AuthService {
       "email": email
     }
     const csrfToken = localStorage.getItem('token');
-      // const headers = new HttpHeaders({
-      //   'Content-Type': 'application/json',
-      //   'X-CSRFToken': csrfToken // Setzen des CSRF-Tokens im Header
-      // });
     return lastValueFrom(this.http.post<User>(url, body))
   }
 
@@ -52,8 +51,8 @@ export class AuthService {
     const body = {
       "password": newPassword
     }
-    return lastValueFrom(this.http.put(url, body))
-    
+    const headers = { 'Content-Type': 'application/json' };
+    return lastValueFrom(this.http.put<User>(url, body, { headers }));
   }
 
   public getUsers(){
@@ -78,7 +77,7 @@ export class AuthService {
 
   public emailExists(email: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.http.get<User[]>('http://127.0.0.1:8000/users/').subscribe({
+      this.http.get<User[]>(environment.baseUrl + '/users/').subscribe({
         next: (users) => {
           let exists = users.some(user => user.email === email);
           resolve(exists);

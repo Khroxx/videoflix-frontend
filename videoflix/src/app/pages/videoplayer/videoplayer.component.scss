@@ -1,75 +1,337 @@
-section{
-    background-color: grey;
-    width: 100dvw;
-    height: 100dvh;
-    position: absolute;
+section {
+    // background-color: grey;
+    width: 320px;
+    height: 180px;
+    position: fixed;
     overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    top: 0;
+    // top: 0;
+    bottom: 20px;
+    right: 30px;
+    border-radius: 5px;
     z-index: 100;
+
+    & {
+        transition: transform 0.2s ease-in-out;
+        /* Add this line to smoothen the scale */
+    }
+
+    &:hover {
+        transform: scale(1.1);
+        /* Use transform instead of scale */
+    }
 }
-header{
+
+header {
     width: calc(100% - 64px);
-    display: flex;
     justify-content: space-between;
     flex-direction: row;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
     padding: 10px 32px;
+    position: relative;
+    z-index: 3;
 }
-img{
+
+img {
     width: 48px;
     height: 48px;
 }
-.videoplayer{
-    position: absolute;
-    width: 100dvw;
-    height: 100dvh;
+
+video {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
 }
-footer{
-    display: flex;
+
+.videoplayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    // width: 100dvw;
+    // height: 100dvh;
+}
+
+footer {
+    // display: flex;
+    // display: none;
     flex-direction: column;
     gap: 16px;
     padding: 0 32px 10px 32px;
     width: calc(100% - 64px);
-
+    position: relative;
+    z-index: 3;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
 }
-.timeline{
+
+.timeline {
     display: flex;
     flex-direction: row;
     width: 100%;
     align-items: center;
     gap: 12px;
-    .timebar{
+
+    .timebar {
         width: 100%;
         height: 8px;
-        border-radius: 100px 0 0 100px;
-        background: #B5B5B5;
+        // border-radius: 100px 0 0 100px;
+        position: relative;
+
+        .timebar-background {
+            background: #B5B5B5;
+            border-radius: 100px 0 0 100px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .timebar-filled {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #b58585;
+            width: 0%;
+        }
     }
-    .timedata{
+
+    .timedata {
         color: white;
     }
 }
-.button-container{
+
+.button-container {
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    .play-buttons, .screen-buttons{
+
+    .play-buttons,
+    .screen-buttons {
         display: flex;
         flex-direction: row;
         gap: 24px;
+        position: relative;
     }
-    h1{
+
+    h1 {
         font-size: 24px;
         font-weight: 700;
         line-height: 31.25px;
     }
 }
-button{
+
+button {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0);
     border: unset;
+
+    // animation: 
+    &:hover {
+        scale: 1.2;
+    }
 }
+
+.popup-controls {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    // display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    z-index: 5;
+}
+
+.hidden {
+    display: none;
+}
+
+.show {
+    display: flex;
+}
+
+.p180p {
+    width: 320px;
+    height: 180px;
+}
+
+.p480 {
+    width: 854px;
+    height: 480px;
+}
+
+.p720 {
+    width: 1280px;
+    height: 720px;
+
+}
+
+.p1080 {
+    width: 1920px;
+    height: 1080px
+}
+
+.header-controls,
+.footer-controls,
+.popup-controls {
+    transition: transform 0.5s ease;
+}
+
+.header-controls.hidden {
+    transform: translateY(-100%);
+}
+
+.footer-controls.hidden {
+    transform: translateY(100%);
+}
+
+.button-click-animation {
+    animation: buttonclick 0.3s ease-in-out;
+}
+
+.volume-container {
+    position: relative;
+    display: none;
+}
+
+.volume-bar {
+    position: absolute;
+    bottom: 150px;
+    left: 30px;
+    width: 8px;
+    height: 100px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    writing-mode: bt-lr;
+}
+
+.volume-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.volume-bar::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+#speedMenu {
+    position: absolute;
+    bottom: 150px;
+    left: 80px;
+    display: none;
+}
+
+.speed-selection {
+    position: relative;
+
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // height: 100%;
+    background-color: rgba(111, 109, 109, 0);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+    height: 200px;
+    width: 200px;
+}
+
+.spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+.playpause {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.playPauseOverlay {
+    width: 150px;
+    height: 150px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    transform: scale(1);
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    position: absolute;
+    z-index: 10;
+
+
+}
+
+.playpause.animate img {
+    opacity: 1;
+    animation: fadeInAndOut 1s forwards
+}
+
+@keyframes fadeInAndOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.5);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes buttonclick {
+    0% {
+        scale: 1.2;
+    }
+
+    50% {
+        scale: 0.5;
+    }
+
+    100% {
+        scale: 1.2;
+    }
+}
+
+// @keyframes hoverButton{}
