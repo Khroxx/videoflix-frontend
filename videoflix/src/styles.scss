@@ -120,3 +120,62 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     align-items: center;
 
 }
+
+.errorPopup {
+    display: flex;
+    align-items: center;
+    background-color: #2E3EDF;
+    padding: 24px 32px;
+    gap: 16px;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 20px;
+    position: absolute;
+    z-index: 5;
+    left: -100%;
+    // left: 50px;
+    bottom: 100px;
+    transition: all 0.5s ease-in-out;
+    .red {
+        background-color: #FF002E;
+        height: 115px;
+        width: 38px;
+        position: absolute;
+        left: -15px;
+    }
+    >span {
+        width: 350px;
+    }
+    .divider{
+        height: 32px;
+        border: 1px solid white;
+    }
+    .sendEmailBtn{
+        background-color: white;
+        display: flex;
+        align-items: center;
+        font-size: 18px;
+        line-height: 23.44px;
+        font-weight: 700;
+        color: #2E3EDF;
+        height: 48px;
+        border: unset;
+        border-radius: 40px;
+        padding: 12px 24px;
+        gap: 10px;
+        cursor: pointer;
+        &:hover{
+            background-color: rgb(165, 165, 165);
+        }
+        &:disabled{
+            background-color: #A5A5A5;
+            color: #CCCCCC;
+            cursor: not-allowed;
+        }
+    }
+    .closeBtn {
+        border: unset;
+        background-color: rgba(0,0,0,0);
+        cursor: pointer;
+    }
+}

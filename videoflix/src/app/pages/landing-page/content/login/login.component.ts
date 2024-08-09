@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
+import { error } from 'node:console';
 
 @Component({
   selector: 'app-login',
@@ -12,13 +13,16 @@ import { SharedFunctionsService } from '../../../../services/shared-functions.se
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  wrongEmail: boolean = false;
-  wrongPw: boolean = false;
-  activatedMsg: boolean = false;
+  // wrongEmail: boolean = false;
+  // wrongPw: boolean = false;
+  wrongMsg: string = '';
   activated: boolean = false;
 
   email: string = '';
   password: string = '';
+
+  @ViewChild('resendEmail') resendEmailPopup!: ElementRef;
+  @ViewChild('errorMsg') errorMsg!: ElementRef;
 
   constructor(
     private router: Router,
@@ -32,6 +36,7 @@ export class LoginComponent {
     this.route.queryParams.subscribe(params => {
       if (params['activated']) {
         this.activated = params['activated'] === 'true';
+        this.showWrongMessage('Your account has been activated, please log in')
       }
     });
   }
@@ -41,22 +46,43 @@ export class LoginComponent {
       if (exists) {
         let is_active = await this.authService.isUserActive(this.email)
           if (is_active) {
-            this.activatedMsg = false
             try {
               let userData: any = await this.authService.loginUser(this.email, this.password);
               localStorage.setItem('token', userData.token);
               this.router.navigate(['videos/']);
-
             } catch {
-              this.wrongPw = true;
+              // this.wrongPw = true;
+              this.showWrongMessage('The password does not match the username')
             }
           } else {
-            this.activatedMsg = true;
-            // popup error user not active, please activate via email
-            // no email? -> enter email to resend email
+            this.closeErrorPopup();
+            this.showEmailNotActivatedPopup();
           }
       } else {
-        this.wrongEmail = true;
+        // this.wrongEmail = true;
+        this.showWrongMessage('This email is not registered in our database')
       }})
+  }     
+  showEmailNotActivatedPopup(){
+    this.resendEmailPopup.nativeElement.style.left = '50px';
+  }
+  showWrongMessage(message: string){
+    this.wrongMsg = message;
+    this.errorMsg.nativeElement.style.left = '50px';
+    setTimeout(() => {
+      this.closeErrorPopup()
+    }, 3000);
+  }
+
+  closePopup(){
+      this.resendEmailPopup.nativeElement.style.left = '-100%';
+  }
+
+  closeErrorPopup(){
+      this.errorMsg.nativeElement.style.left = '-100%';
+  }
+
+  resendEmailActivationLink(){
+    this.authService.sendEmailActivationOnly(this.email);
   }
 }

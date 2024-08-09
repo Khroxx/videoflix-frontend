@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import { devEnvironment } from '../../environments/environment.development';
 import { environment } from '../../environments/environment';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { User } from '../interfaces/user';
 import { HttpHeaders } from '@angular/common/http';
+import { Csrftoken } from '../interfaces/csrftoken';
 
 
 @Injectable({
@@ -17,7 +18,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  public async  registerUser(email: string, password: string){
+  public async registerUser(email: string, password: string) {
     // DEVELOPMENT URL
     const url = environment.baseUrl + '/user/register/';
     const body = {
@@ -28,17 +29,23 @@ export class AuthService {
 
   }
 
- public async resendEmailActivationEmail(email: string){
-    await this.fetchCSRFToken()
-    const url = environment.baseUrl + '/user/verify/';
+  public async sendEmailActivationOnly(email: string) {
+    const url = `${environment.baseUrl}/verify-again/`;
     const body = {
-      "email": email
+      "email": email  
     }
-    const csrfToken = localStorage.getItem('token');
-    return lastValueFrom(this.http.post<User>(url, body))
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    try {
+      return await lastValueFrom(this.http.post(url, body, { headers: headers }));
+    } catch (error) {
+      console.error('Error sending email activation:', error);
+      throw error;
+    }
   }
 
-  public async sendPasswordResetEmail(email: string){
+  public async sendPasswordResetEmail(email: string) {
     const url = environment.baseUrl + `/send_reset_email/`;
     const body = {
       "email": email
@@ -46,7 +53,7 @@ export class AuthService {
     return lastValueFrom(this.http.post<User[]>(url, body))
   }
 
-  public async changePassword(userId: string, newPassword: string){
+  public async changePassword(userId: string, newPassword: string) {
     const url = environment.baseUrl + `/users/${userId}/`;
     const body = {
       "password": newPassword
@@ -55,13 +62,13 @@ export class AuthService {
     return lastValueFrom(this.http.put<User>(url, body, { headers }));
   }
 
-  public getUsers(){
+  public getUsers() {
     const url = environment.baseUrl + '/users/';
     const allUsers = this.http.get<User[]>(url).subscribe;
     return allUsers
   }
 
-  public async isUserActive(email: string){
+  public async isUserActive(email: string) {
     const url = environment.baseUrl + '/users/';
     try {
       const users = await lastValueFrom(this.http.get<User[]>(url));
@@ -87,7 +94,7 @@ export class AuthService {
     });
   }
 
-  async loginUser(email: string, password: string){
+  async loginUser(email: string, password: string) {
     const url = environment.baseUrl + '/login/';
     const body = {
       "email": email,
@@ -97,7 +104,7 @@ export class AuthService {
     return lastValueFrom(postrequest)
   }
 
-  async logoutUser(token: string){
+  async logoutUser(token: string) {
     const url = environment.baseUrl + '/logout/';
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
@@ -105,7 +112,7 @@ export class AuthService {
     try {
       this.http.get<User[]>(url, { headers });
       // this.csrfToken = '';
-    } catch (error){
+    } catch (error) {
       console.error(error)
     }
   }
@@ -113,13 +120,22 @@ export class AuthService {
   ngOnDestroy(): void {
   }
 
-  public async fetchCSRFToken(){
+  public async fetchCSRFToken() {
     const url = environment.baseUrl + '/get-csrf-token/';
-    this.http.get<({ csrf_token: string })>(url).subscribe({
-        next: (response) => {
-          localStorage.setItem('csrf-token', response.csrf_token)},
-        error: (error) => {console.error('couldnt fetch csrf token', error)}
-      })
+    let resp = this.http.get<({ csrf_token: string })>(url).subscribe({
+      next: (response) => {
+        localStorage.setItem('csrf-token', response.csrf_token)
+      },
+
+      error: (error) => { console.error('couldnt fetch csrf token', error) }
+    })
+
+  }
+
+  public async getCSRFToken(): Promise<Csrftoken> {
+    const url = environment.baseUrl + '/get-csrf-token/';
+    const response = await lastValueFrom(this.http.get<Csrftoken>(url));
+    return response;
   }
 
 }

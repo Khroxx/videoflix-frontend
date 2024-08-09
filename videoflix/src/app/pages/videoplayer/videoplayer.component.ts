@@ -22,10 +22,10 @@ export class VideoplayerComponent {
   @ViewChild('timebar') timebar!: ElementRef;
   @ViewChild('loadingSpinner') loadingSpinner!: ElementRef;
 
-  videoUrl!: SafeUrl;
+  videoUrl!: SafeUrl | any;
   videoData!: any;
   videoId!: any;
-  videoBlob!: any;
+  videoBlob!: Blob;
   currentVideo: Video | undefined;
   formattedTime: string = '00:00 / 00:00';
   playPauseImage: string = 'img/play_arrow.png';
@@ -36,7 +36,7 @@ export class VideoplayerComponent {
   private intervalId: any;
   public showPlayPauseAnimation: boolean = false;
   videoElement!: HTMLVideoElement;
-  
+
 
 
   constructor(
@@ -51,6 +51,7 @@ export class VideoplayerComponent {
   async ngOnInit() {
     this.route.paramMap.subscribe(async params => {
       this.videoId = params.get('id');
+      // Promise.
       await this.loadVideo(this.videoId);
       this.videoService.getSingleVideo(this.videoId).then((data: Video) => {
         this.currentVideo = data;
@@ -61,11 +62,11 @@ export class VideoplayerComponent {
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('fullscreenchange', this.exitFullscreen.bind(this));
     }
-    
+
   }
-  
-  
-  
+
+
+
   ngAfterViewInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.addClickAnimationToButtons();
@@ -83,7 +84,7 @@ export class VideoplayerComponent {
 
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent): void {
-    if (document.fullscreenElement === this.videoContainer.nativeElement) {
+    if (this.videoContainer && document.fullscreenElement === this.videoContainer.nativeElement) {
       this.showControls();
       this.resetHideControlsTimer();
       this.renderer.removeClass(this.popupControls.nativeElement, 'show');
@@ -126,7 +127,7 @@ export class VideoplayerComponent {
     this.isLoading = true
     try {
       if (this.videoplayer && this.videoplayer.nativeElement) {
-        await this.changeQualityOfVideo(videoId, '480p');
+        await this.changeQualityOfVideo(videoId, '480p')
         this.isLoading = false
         this.videoplayer.nativeElement.addEventListener('canplay', () => {
           this.videoplayer.nativeElement.load();
@@ -143,7 +144,7 @@ export class VideoplayerComponent {
     }
   }
 
-  startUpdatingTimebar(){
+  startUpdatingTimebar() {
     this.intervalId = setInterval(() => {
       this.updateTimebar();
     }, 1000);
@@ -190,14 +191,19 @@ export class VideoplayerComponent {
     this.videoplayer.nativeElement.pause();
     this.isPlaying = false;
     this.playPauseImage = 'img/play_arrow.png';
-    this.updateTimebar();           
+    this.updateTimebar();
   }
 
   async changeQualityOfVideo(videoId: string, quality: string) {
     try {
-      this.videoBlob = await this.videoService.getVideoFileByQuality(videoId, quality);
-      const videoUrl = URL.createObjectURL(this.videoBlob);
+      let currentTime = this.videoplayer.nativeElement.currentTime
+      const videoUrl = await this.videoService.getVideoFileByQuality(videoId, quality);
       this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(videoUrl);
+      if (this.videoplayer) {
+        this.videoplayer.nativeElement.src = this.videoUrl;
+        this.videoplayer.nativeElement.currentTime = currentTime;
+      }
+
     } catch (error) {
       console.log('error quality', error)
     }
@@ -221,7 +227,6 @@ export class VideoplayerComponent {
     } else {
       volumeContainer.style.display = 'none';
     }
-    // this.videoplayer.nativeElement.muted = !this.videoplayer.nativeElement.muted;
   }
   changeVolume(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -258,13 +263,13 @@ export class VideoplayerComponent {
           this.isLoading = true
           this.exitFullscreen();
           this.hideControls();
-
+          
         });
       } else {
         container.requestFullscreen().then(() => {
           this.isLoading = true
           this.enterFullscreen();
-          
+
         });
       }
     }
@@ -273,28 +278,37 @@ export class VideoplayerComponent {
   async exitFullscreen() {
     this.videoContainer.nativeElement.style.width = '320px';
     this.videoContainer.nativeElement.style.height = '180px';
-    this.loadingSpinner.nativeElement.style.width = '20px';
-    this.loadingSpinner.nativeElement.style.height = '20px';
-    this.loadingSpinner.nativeElement.style.border = '8px solid #f3f3f3';
-    this.loadingSpinner.nativeElement.style.borderTop = '8px solid #3498db';
+
     this.renderer.removeClass(this.popupControls.nativeElement, 'hidden');
     this.renderer.addClass(this.popupControls.nativeElement, 'show');
     await this.changeQualityOfVideo(this.videoId, '480p');
     this.isLoading = false;
-    //gleiche zeit noch und dann play
-    // await this.loadVideo(this.videoId)
+
+    if (this.loadingSpinner) {
+      // wahrscheinlich durch responsive austauschen
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'width', '20px');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'height', '20px');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'border', '8px solid #f3f3f3');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'borderTop', '8px solid #3498db');
+
+    }
   }
 
   async enterFullscreen() {
     this.videoContainer.nativeElement.style.width = '100dvw';
     this.videoContainer.nativeElement.style.height = '100dvh';
-    this.loadingSpinner.nativeElement.style.width = '120px !important';
-    this.loadingSpinner.nativeElement.style.height = '120px !important';
-    this.loadingSpinner.nativeElement.style.border = '14px solid #f3f3f3 !important';
-    this.loadingSpinner.nativeElement.style.borderTop = '14px solid #3498db !important';
+
+
     await this.changeQualityOfVideo(this.videoId, '720p');
     this.isLoading = false;
-    // erstmal 720p
+    // wahrscheinlich durch responsive austauschen
+    if (this.loadingSpinner) {
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'width', '120px');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'height', '120px');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'border', '14px solid #f3f3f3');
+      this.renderer.setStyle(this.loadingSpinner.nativeElement, 'borderTop', '14px solid #3498db');
+
+    }
   }
 
   closeVideo() {

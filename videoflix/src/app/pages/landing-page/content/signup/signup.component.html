@@ -3,9 +3,9 @@
     <form #signupForm="ngForm">
         <div>
             <input id="email" name="email" class="p-input" type="email" placeholder="Email Adress" [(ngModel)]="email">
-            @if(emailError){
+            <!-- @if(emailError){
                 <p class="errorMsg">This Email is already registered. Please login.</p>
-            }
+            } -->
         </div>
         <input id="password" name="password1" class="p-input" type="password" placeholder="Enter a password" [(ngModel)]="password1">
         <div>
@@ -20,4 +20,14 @@
     </form>
     <button [disabled]="!email || !password1 || !password2" class="btn" (click)="createUser()">Get Started</button>
     
+</div>
+
+<div class="errorPopup" #errorMsg>
+    <div class="red"></div>
+    <img src="img/exclamation.png" alt="">
+    <span>{{ wrongMsg }}</span>
+    <div class="divider"></div>
+    <button (click)="closeErrorPopup()" class="closeBtn">
+        <img src="img/close_small.png" alt="">
+    </button>
 </div>
