@@ -24,19 +24,6 @@ export class VideoService {
     return await lastValueFrom(this.http.get<Video>(url))
   }
 
-  // public async getVideoFileByQuality(videoId: string, quality: string): Promise<Blob>{
-  //   const url = `${environment.baseUrl}/videos/${videoId}/file/${quality}/`;
-  //   const headers = new HttpHeaders({
-  //     'Accept': '*/*',
-  //     'Content-Type': 'video/mp4'
-  //   });
-  //   try {
-  //     return await lastValueFrom(this.http.get(url, { headers, responseType: 'blob' }));
-  //   } catch (error) {
-  //     console.error('Error fetching video file:', error);
-  //     throw error;
-  //   }
-  // }
   public async getVideoFileByQuality(videoId: string, quality: string) {
     const url = `${environment.baseUrl}/videos/${videoId}/file/${quality}/`;
     return url
