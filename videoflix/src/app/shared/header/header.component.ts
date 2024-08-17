@@ -31,7 +31,7 @@ export class HeaderComponent {
 
   isWindowSizeSmall(){
     if (typeof window !== 'undefined'){
-      if (window.innerWidth < 460 || window.innerWidth > window.innerHeight) {
+      if (window.innerWidth < 460 || window.innerHeight < 460 && window.innerWidth > window.innerHeight) {
         this.logoImg = 'img/logo_only.png';
       } else {
       this.logoImg = 'img/logo.png';

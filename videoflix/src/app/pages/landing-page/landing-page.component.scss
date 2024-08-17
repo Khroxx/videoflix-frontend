@@ -10,8 +10,6 @@
     position: relative;
     display: flex;
     justify-content: center;
-    // align-items: center;
-    // width: 100dvw;
 }
 router-outlet.front{
     display: none;
@@ -37,11 +35,4 @@ router-outlet.front{
     .start-page{
         overflow: scroll;
     }
-    // .shadow{
-    //     height: 100%;
-    //     min-height: unset;
-    // }
-    // .backgroundImg{
-             
-    // }
 }
