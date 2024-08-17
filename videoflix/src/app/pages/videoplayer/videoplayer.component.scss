@@ -220,16 +220,29 @@ button {
     cursor: pointer;
 }
 
-#speedMenu {
+#speedMenu, #qualityMenu {
     position: absolute;
     bottom: 150px;
     left: 80px;
     display: none;
 }
 
-.speed-selection {
+.speed-selection, .quality-selection {
     position: relative;
 
+}
+
+.hd-icon{
+    height: 48px;
+    >img{
+        height: 36px !important;
+    }
+}
+#qualityMenu{
+    position: absolute;
+    bottom: 150px;
+    left: -40px;
+    display: none;
 }
 
 .loading {

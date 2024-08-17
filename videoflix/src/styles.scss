@@ -179,3 +179,55 @@ app-login, app-forgot-password, app-signup, app-reset-password{
         cursor: pointer;
     }
 }
+
+
+// VIDEO JS
+
+// actual player
+.video-js{
+    width: 100%;
+    height: 100%;
+}
+
+.vjs-error-dialog, .vjs-modal-dialog, .vjs-big-play-button, .vjs-hidden,
+.vjs-loading-spinner, .vjs-text-track-display, .vjs-volume-panel,
+.vjs-play-control, .vjs-seek-to-live-control, .vjs-remaining-time, 
+.vjs-fullscreen-control, .vjs-mouse-display, .vjs-play-progress{
+    display: none !important;
+}
+
+.vjs-control-bar{
+    position: absolute;
+    bottom: 85px;
+    width: 100dvw;
+    display: flex;
+    flex-direction: row;
+}
+
+.vjs-current-time {
+    position: relative;
+    left: 93dvw;
+    >.vjs-control-text{
+        display: none !important;
+    }
+}
+
+.vjs-time-control{
+    position: relative;
+    left: 93dvw;
+
+}
+.vjs-duration{
+    position: relative;
+    left: 93dvw;
+
+    >.vjs-control-text{
+        display: none !important;
+    }
+}
+.vjs-progress-control{
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}

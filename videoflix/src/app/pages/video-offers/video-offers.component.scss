@@ -5,7 +5,6 @@ section{
     overflow-y: scroll;
     display: flex;
     position: relative;
-    // z-index: 0; //0 -3
     align-items: center;
     flex-direction: column;
 }
@@ -17,7 +16,7 @@ header{
     flex-direction: row;
     justify-content: space-between;
     position: relative;
-    z-index: 3; //310
+    z-index: 3;
     padding: 10px 96px;
     max-width: 1440px;
     width: 1440px;
@@ -32,7 +31,7 @@ header{
     width: 100dvw;
     max-width: 100dvw;
     background-color: aqua;
-    z-index: 1;// 2 -1
+    z-index: 1;
     top: 0;
     height: 800px;
     &:before {
@@ -43,16 +42,42 @@ header{
         right: 0;
         bottom: 0;
         background: linear-gradient(180deg, rgba(20, 20, 20, 0.6) 0%, rgba(20, 20, 20, 0) 50%, #141414 100%);
-        z-index: 2;// 2 -1
+        z-index: 5;
     }
 
     >img{
         width: 100%;
         height: 100%;
         position: relative;
-        z-index: 1; //1 -2
+        z-index: 1;
     }
 }
+
+.trailer {
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 200px 0 20px rgba(0, 0, 0, 0.99), inset -200px 0 20px rgba(0, 0, 0, 0.99);
+    video {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0, 0.9);
+    }
+    >.trailer-video{
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.show-trailer{
+    animation: fadeTrailerIn 15s forwards;
+    transition: all ease-in-out;
+}
+
 .info-container{
     width: 1440px;
     max-width: 1440px;
@@ -89,7 +114,7 @@ header{
     align-items: flex-start;
     gap: 48px;
     position: relative;
-    z-index: 4;
+    z-index: 10;
 }
 .video-content{
     display: flex;
@@ -110,4 +135,22 @@ header{
         }
     }
 }
-    
+
+@keyframes fadeTrailerIn {
+    0% {
+        visibility: hidden;
+        opacity: 0;
+    }
+    33% {
+        visibility: visible;
+        opacity: 1;
+    }
+    66% {
+        visibility: visible;
+        opacity: 1;
+    }
+    100% {
+        visibility: hidden;
+        opacity: 0;
+    }
+}

@@ -17,6 +17,18 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "allowedCommonJsDependencies": [
+              "@xmldom/xmldom",
+              "url-toolkit",
+              "mux.js/lib/utils/clock",
+              "mux.js/lib/tools/parse-sidx",
+              "@babel/runtime/helpers/extends",
+              "videojs-vtt.js",
+              "@videojs/xhr",
+              "safe-json-parse/tuple",
+              "global/document",
+              "global/window"
+            ],
             "outputPath": "dist/videoflix",
             "index": "src/index.html",
             "browser": "src/main.ts",

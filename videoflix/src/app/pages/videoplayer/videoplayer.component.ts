@@ -1,10 +1,13 @@
-import { Component, ElementRef, HostListener, Inject, PLATFORM_ID, Renderer2, ViewChild, viewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, PLATFORM_ID, Renderer2, ViewChild, viewChild } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { VideoService } from '../../services/video.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Video } from '../../interfaces/video';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Subscription } from 'rxjs';
+import videojs from 'video.js';
+import Player from 'video.js/dist/types/player';
+// import 'videojs-contrib-hls';      
+// import 'videojs-contrib-quality-levels';
 
 @Component({
   selector: 'app-videoplayer',
@@ -17,15 +20,25 @@ export class VideoplayerComponent {
   @ViewChild('headerControls') headerControls!: ElementRef;
   @ViewChild('footerControls') footerControls!: ElementRef;
   @ViewChild('popupControls') popupControls!: ElementRef;
-  @ViewChild('videoplayer', { static: false }) videoplayer!: ElementRef<HTMLVideoElement>;
+  @ViewChild('videoplayer', { static: true }) videoplayer!: ElementRef<HTMLVideoElement>;
   @ViewChild('videoContainer') videoContainer!: ElementRef;
   @ViewChild('timebar') timebar!: ElementRef;
   @ViewChild('loadingSpinner') loadingSpinner!: ElementRef;
 
-  videoUrl!: SafeUrl | any;
+  @Input() options!: {
+    fluid: boolean,
+    aspectRatio: string,
+    autoplay: boolean,
+    sources: {
+      src: string,
+      type: string,
+    }[],
+  };
+
+  // videoUrl!: string;
   videoData!: any;
   videoId!: any;
-  videoBlob!: Blob;
+  // videoBlob!: Blob;
   currentVideo: Video | undefined;
   formattedTime: string = '00:00 / 00:00';
   playPauseImage: string = 'img/play_arrow.png';
@@ -36,8 +49,7 @@ export class VideoplayerComponent {
   private intervalId: any;
   public showPlayPauseAnimation: boolean = false;
   videoElement!: HTMLVideoElement;
-
-
+  player!: Player
 
   constructor(
     private videoService: VideoService,
@@ -46,40 +58,52 @@ export class VideoplayerComponent {
     private router: Router,
     private renderer: Renderer2,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) { }
+  ) {
+  }
 
   async ngOnInit() {
     this.route.paramMap.subscribe(async params => {
       this.videoId = params.get('id');
-      // Promise.
-      await this.loadVideo(this.videoId);
-      this.videoService.getSingleVideo(this.videoId).then((data: Video) => {
+      this.videoService.getSingleVideo(this.videoId).then(async (data: Video) => {
         this.currentVideo = data;
+        await this.getHLSPlaylist(this.currentVideo.title);
       });
       this.resetHideControlsTimer();
-      this.videoplayer.nativeElement.addEventListener('ended', this.onVideoEnded.bind(this));
+      this.hideControls()
     });
     if (isPlatformBrowser(this.platformId)) {
       document.addEventListener('fullscreenchange', this.exitFullscreen.bind(this));
+      this.checkAndHideLoadedPercentage();
+      setInterval(() => this.checkAndHideLoadedPercentage(), 1000);
     }
-
+    this.isLoading = true;
   }
 
-
-
-  ngAfterViewInit(): void {
+  async ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
       this.addClickAnimationToButtons();
-    }
-    if (this.videoId) {
-      this.loadVideo(this.videoId)
     }
   }
 
   ngOnDestroy(): void {
     this.stopUpdatingTimebar();
     this.videoplayer.nativeElement.removeEventListener('ended', this.onVideoEnded.bind(this));
+    if (this.player) {
+      this.player.dispose();
+    }
+  }
 
+  initializeVideoJsPlayer(url: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.player = videojs(this.videoplayer.nativeElement, this.options);
+      this.player.autoplay(true)
+      this.player.src({
+        src: url,
+        type: 'application/x-mpegURL'
+      });
+      this.isLoading = false;
+      this.player.on('ended', this.onVideoEnded.bind(this));
+    }
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -103,17 +127,33 @@ export class VideoplayerComponent {
   }
 
   private showControls(): void {
-    this.renderer.removeClass(this.headerControls.nativeElement, 'hidden');
-    this.renderer.addClass(this.headerControls.nativeElement, 'show');
-    this.renderer.removeClass(this.footerControls.nativeElement, 'hidden');
-    this.renderer.addClass(this.footerControls.nativeElement, 'show');
+    if (isPlatformBrowser(this.platformId)) {
+      const vjsElements = document.querySelectorAll('.vjs-current-time, .vjs-time-control, .vjs-duration');
+      if (this.headerControls && this.footerControls) {
+        this.renderer.removeClass(this.headerControls.nativeElement, 'hidden');
+        this.renderer.addClass(this.headerControls.nativeElement, 'show');
+        this.renderer.removeClass(this.footerControls.nativeElement, 'hidden');
+        this.renderer.addClass(this.footerControls.nativeElement, 'show');
+        vjsElements.forEach(element => {
+          (element as HTMLElement).style.display = 'block';
+        });
+      }
+    }
   }
 
   private hideControls(): void {
-    this.renderer.removeClass(this.headerControls.nativeElement, 'show');
-    this.renderer.addClass(this.headerControls.nativeElement, 'hidden');
-    this.renderer.removeClass(this.footerControls.nativeElement, 'show');
-    this.renderer.addClass(this.footerControls.nativeElement, 'hidden');
+    if (isPlatformBrowser(this.platformId)) {
+      const vjsElements = document.querySelectorAll('.vjs-current-time, .vjs-time-control, .vjs-duration');
+      if (this.headerControls && this.footerControls) {
+        this.renderer.removeClass(this.headerControls.nativeElement, 'show');
+        this.renderer.addClass(this.headerControls.nativeElement, 'hidden');
+        this.renderer.removeClass(this.footerControls.nativeElement, 'show');
+        this.renderer.addClass(this.footerControls.nativeElement, 'hidden');
+        vjsElements.forEach(element => {
+          (element as HTMLElement).style.display = 'none';
+        });
+      }
+    }
   }
 
   private resetHideControlsTimer(): void {
@@ -123,25 +163,26 @@ export class VideoplayerComponent {
     }, 2000);
   }
 
-  async loadVideo(videoId: string) {
-    this.isLoading = true
-    try {
-      if (this.videoplayer && this.videoplayer.nativeElement) {
-        await this.changeQualityOfVideo(videoId, '480p')
-        this.isLoading = false
-        this.videoplayer.nativeElement.addEventListener('canplay', () => {
-          this.videoplayer.nativeElement.load();
-          this.videoplayer.nativeElement.play();
-          this.triggerPlayPauseAnimation('img/play_arrow.png');
-          this.startUpdatingTimebar();
-          this.isPlaying = true;
-          this.playPauseImage = 'img/pause.png';
-        }, { once: true });
-      }
+  // changeCurrentTime(event: MouseEvent) {
+  //   let select = this.timebar.nativeElement.getBoundingClientRect();
+  //   let clickPosition = event.clientX - select.left;
+  //   let percentage = clickPosition / select.width;
+  //   let newTime = this.videoplayer.nativeElement.duration * percentage;
+  //   newTime = Math.max(0, Math.min(newTime, this.videoplayer.nativeElement.duration));
+  //   this.videoplayer.nativeElement.currentTime = newTime;
+  //   console.log(newTime)
+  //   this.updateTimebar();
+  // }
 
-    } catch (error) {
-      console.error('Error loading video:', error)
-    }
+  async getHLSPlaylist(title: string) {
+    const videoUrl = await this.videoService.getHLSPlaylist(title);
+    this.initializeVideoJsPlayer(videoUrl);
+    this.videoplayer.nativeElement.addEventListener('canplay', () => {
+      this.triggerPlayPauseAnimation('img/play_arrow.png');
+      this.startUpdatingTimebar();
+      this.isPlaying = true;
+      this.playPauseImage = 'img/pause.png';
+    }, { once: true });
   }
 
   startUpdatingTimebar() {
@@ -151,12 +192,32 @@ export class VideoplayerComponent {
   }
 
   stopUpdatingTimebar() {
-    if (this.intervalId) {
+    if (this.intervalId) {  
       clearInterval(this.intervalId);
     }
   }
 
-  updateTimebar(): void {
+  //eventuell weg und nur loadingspinner
+  checkAndHideLoadedPercentage() {
+    const percentage = document.querySelectorAll('.vjs-control-text-loaded-percentage');
+    const control = document.querySelectorAll('.vjs-progress-control');
+    percentage.forEach((element: Element) => {
+      const value = element.textContent?.trim();
+      if (value === '100.00%') {
+        // this.isLoading = false
+        control.forEach((element: Element) => {
+          let controlElement = element as HTMLElement;
+          controlElement.style.transition = 'visibility 0.5s ease-in-out, opacity 0.5s ease-in-out';
+          controlElement.style.opacity = '0';
+          setTimeout(() => {
+            controlElement.style.visibility = 'hidden';
+          }, 500);
+        })
+      }
+    });
+  }
+
+  updateTimebar(){
     const currentTime = this.videoplayer.nativeElement.currentTime;
     const duration = this.videoplayer.nativeElement.duration;
     const percentage = (currentTime / duration) * 100;
@@ -164,14 +225,14 @@ export class VideoplayerComponent {
     this.updateTimebarUI(percentage);
   }
 
-  updateTimebarUI(percentage: number): void {
+  updateTimebarUI(percentage: number){
     const timebar = this.timebar.nativeElement;
     if (timebar) {
       timebar.style.width = `${percentage}%`;
     }
   }
 
-  playVideo(): void {
+  playVideo() {
     if (this.videoplayer.nativeElement.paused) {
       this.videoplayer.nativeElement.play();
       this.startUpdatingTimebar();
@@ -186,6 +247,7 @@ export class VideoplayerComponent {
     }
   }
 
+  //für dev, für deployment weg
   onVideoEnded(): void {
     this.videoplayer.nativeElement.currentTime = 0;
     this.videoplayer.nativeElement.pause();
@@ -194,22 +256,6 @@ export class VideoplayerComponent {
     this.updateTimebar();
   }
 
-  async changeQualityOfVideo(videoId: string, quality: string) {
-    try {
-      let currentTime = this.videoplayer.nativeElement.currentTime
-      const videoUrl = await this.videoService.getVideoFileByQuality(videoId, quality);
-      this.videoUrl = this.sanitizer.bypassSecurityTrustUrl(videoUrl);
-      if (this.videoplayer) {
-        this.videoplayer.nativeElement.src = this.videoUrl;
-        this.videoplayer.nativeElement.currentTime = currentTime;
-      }
-
-    } catch (error) {
-      console.log('error quality', error)
-    }
-
-
-  }
 
   back10(): void {
     this.videoplayer.nativeElement.currentTime -= 10;
@@ -220,7 +266,6 @@ export class VideoplayerComponent {
   }
 
   showVolume(): void {
-    // edit to open volume bar
     const volumeContainer = document.querySelector('.volume-container') as HTMLElement;
     if (volumeContainer.style.display === 'none' || volumeContainer.style.display === '') {
       volumeContainer.style.display = 'block';
@@ -228,15 +273,40 @@ export class VideoplayerComponent {
       volumeContainer.style.display = 'none';
     }
   }
+
   changeVolume(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.videoplayer.nativeElement.volume = inputElement.valueAsNumber;
   }
 
-  toggleSubtitles(): void {
-    const track = this.videoplayer.nativeElement.textTracks[0];
-    if (track) {
-      track.mode = track.mode === 'showing' ? 'hidden' : 'showing';
+  changeQualityofVideo() {
+    const qualityContainer = document.querySelector('#qualityMenu') as HTMLElement;
+    if (qualityContainer.style.display === 'none' || qualityContainer.style.display === '') {
+      qualityContainer.style.display = 'block';
+    } else {
+      qualityContainer.style.display = 'none';
+    }
+  }
+
+  setVideoQuality(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const quality = selectElement.value;
+    this.changeQualityTo(quality);
+  }
+
+  async changeQualityTo(quality: string, currentTime?: number) {
+    let newQuality = await this.videoService.getPlaylistbyQuality(this.currentVideo!.title, quality);
+    if (isPlatformBrowser(this.platformId)) {
+      this.player.src({
+        src: newQuality,
+        type: 'application/x-mpegURL'
+      });
+      if (!currentTime) {
+        let currentTime = this.player.currentTime();
+        this.player.currentTime(currentTime);
+      } else {
+        this.player.currentTime(currentTime);
+      }
     }
   }
 
@@ -256,58 +326,49 @@ export class VideoplayerComponent {
   }
 
   toggleFullscreen(): void {
+    const currentTime = this.player.currentTime();
     const container = this.videoContainer.nativeElement;
+    this.isLoading = true;
     if (container.requestFullscreen) {
       if (document.fullscreenElement) {
         document.exitFullscreen().then(() => {
-          this.isLoading = true
           this.exitFullscreen();
+          this.changeQualityTo('480p', currentTime);
+          this.isLoading = false;
           this.hideControls();
-          
         });
       } else {
         container.requestFullscreen().then(() => {
-          this.isLoading = true
           this.enterFullscreen();
-
+          this.changeQualityTo('1080p', currentTime)
+          this.isLoading = false;
         });
       }
     }
   }
 
-  async exitFullscreen() {
+  exitFullscreen() {
     this.videoContainer.nativeElement.style.width = '320px';
     this.videoContainer.nativeElement.style.height = '180px';
-
     this.renderer.removeClass(this.popupControls.nativeElement, 'hidden');
     this.renderer.addClass(this.popupControls.nativeElement, 'show');
-    await this.changeQualityOfVideo(this.videoId, '480p');
-    this.isLoading = false;
-
     if (this.loadingSpinner) {
-      // wahrscheinlich durch responsive austauschen
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'width', '20px');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'height', '20px');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'border', '8px solid #f3f3f3');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'borderTop', '8px solid #3498db');
-
     }
   }
 
-  async enterFullscreen() {
+  enterFullscreen() {
     this.videoContainer.nativeElement.style.width = '100dvw';
     this.videoContainer.nativeElement.style.height = '100dvh';
-
-
-    await this.changeQualityOfVideo(this.videoId, '720p');
-    this.isLoading = false;
     // wahrscheinlich durch responsive austauschen
     if (this.loadingSpinner) {
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'width', '120px');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'height', '120px');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'border', '14px solid #f3f3f3');
       this.renderer.setStyle(this.loadingSpinner.nativeElement, 'borderTop', '14px solid #3498db');
-
     }
   }
 

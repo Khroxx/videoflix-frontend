@@ -4,11 +4,11 @@ import { environment } from '../../environments/environment';
 import { lastValueFrom, Observable } from 'rxjs';
 import { Video } from '../interfaces/video';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class VideoService {
-  // currentVideo = 
 
   constructor(
     private http: HttpClient
@@ -24,8 +24,16 @@ export class VideoService {
     return await lastValueFrom(this.http.get<Video>(url))
   }
 
-  public async getVideoFileByQuality(videoId: string, quality: string) {
-    const url = `${environment.baseUrl}/videos/${videoId}/file/${quality}/`;
+  public async getHLSPlaylist(title: string){
+    let folderName = title.toLowerCase().replaceAll(' ', '');
+    const url = `${environment.baseUrl}/media/hls/${folderName}/master.m3u8`;
+    return url
+  } 
+
+  public async getPlaylistbyQuality(title: string, quality: string){
+    let folderName = title.toLowerCase().replaceAll(' ', '');
+    const url = `${environment.baseUrl}/media/hls/${folderName}/${quality}.m3u8`
     return url
   }
+
 }

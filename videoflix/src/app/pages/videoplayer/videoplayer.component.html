@@ -5,11 +5,14 @@
     </div>
     <header class="header-controls hidden" #headerControls>
         <button (click)="closeVideo()" class="backBtn"><img src="img/arrow_back.png" alt=""></button>
+        <!-- <div class="vjs-progress-control vjs-control">
+            <div class="vjs-progress-holder vjs-slider vjs-slider-horizontal" role="slider"></div> 
+        </div> -->
         <img src="img/logo_only.png" alt="">
     </header>
     <div class="videoplayer">
         
-            <video #videoplayer (click)="playVideo()" [src]="videoUrl" (timeupdate)="updateTime()"></video>
+            <video #videoplayer class="video-js" data-setup="{}" (click)="playVideo()" (timeupdate)="updateTime()" preload="auto"></video>
         
             @if (isLoading){
                 <div class="loading">
@@ -24,14 +27,25 @@
         
     </div>
     <footer class="footer-controls hidden" #footerControls>
-        <div class="timeline">
+        <div class="timeline">  
             <div class="timebar">
                 <div class="timebar-background"></div>
                 <div class="timebar-filled" #timebar></div>
             </div>
-            <div class="timedata">
+            <!-- <div class="timedata">
                 {{ formattedTime }}
-            </div>
+            </div> -->
+            <!-- <div class="current-time-display">
+                <div class="vjs-current-time vjs-time-control vjs-control">
+                    <span class="vjs-current-time-display" role="presentation"></span>
+                </div>
+                <div class="vjs-time-control vjs-time-divider">
+                    <span>/</span>
+                </div>
+                <div class="vjs-duration vjs-time-control vjs-control">
+                    <span class="vjs-duration-display" role="presentation"></span>
+                </div>
+            </div> -->
         </div>
 
         <div class="button-container">
@@ -51,12 +65,20 @@
                 {{ videoData?.title || 'Movie Name' }}
             </h1>
             <div class="screen-buttons">
-                <button (click)="toggleSubtitles()"><img src="img/subtitles.png" alt=""></button>
+                <!-- <button (click)="toggle    Subtitles()"><img src="img/subtitles.png" alt=""></button> -->
+                 <div>
+                    <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
+                    <select id="qualityMenu" (change)="setVideoQuality($event)">
+                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']" [value]="quality">
+                            {{ quality }}
+                        </option>
+                    </select>
+                 </div>
                 <div>
                     <button (click)="changePlaybackSpeed()"><img src="img/speed.png" alt=""></button>
                     <select id="speedMenu" (change)="setPlaybackSpeed($event)">
-                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">{{
-                            speed }}x</option>
+                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">
+                            {{ speed }}x</option>
                     </select>
                 </div>
                 <button (click)="toggleFullscreen()"><img src="img/fullscreen.png" alt=""></button>
