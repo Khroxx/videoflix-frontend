@@ -13,8 +13,6 @@ import { error } from 'node:console';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  // wrongEmail: boolean = false;
-  // wrongPw: boolean = false;
   wrongMsg: string = '';
   activated: boolean = false;
 
@@ -63,10 +61,14 @@ export class LoginComponent {
         this.showWrongMessage('This email is not registered in our database')
       }})
   }     
+
   showEmailNotActivatedPopup(){
+    this.resendEmailPopup.nativeElement.style.visibility = 'visible';
     this.resendEmailPopup.nativeElement.style.left = '50px';
   }
+
   showWrongMessage(message: string){
+    this.errorMsg.nativeElement.style.visibility = 'visible';
     this.wrongMsg = message;
     this.errorMsg.nativeElement.style.left = '50px';
     setTimeout(() => {
@@ -75,11 +77,17 @@ export class LoginComponent {
   }
 
   closePopup(){
-      this.resendEmailPopup.nativeElement.style.left = '-100%';
+      this.resendEmailPopup.nativeElement.style.left = '-300%';
+      setTimeout(() => {
+        this.resendEmailPopup.nativeElement.style.visibility = 'hidden';
+      }, 500);
   }
 
   closeErrorPopup(){
-      this.errorMsg.nativeElement.style.left = '-100%';
+      this.errorMsg.nativeElement.style.left = '-300%';
+      setTimeout(() => {
+        this.errorMsg.nativeElement.style.visibility = 'hidden';
+      }, 500);
   }
 
   resendEmailActivationLink(){

@@ -25,3 +25,8 @@ header{
         min-width: calc(100dvw - 40px);
     }
 }
+@media (max-width: 450px){
+    header {
+        height: 60px;
+    }
+}

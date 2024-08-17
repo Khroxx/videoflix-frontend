@@ -132,8 +132,8 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     border-radius: 20px;
     position: absolute;
     z-index: 5;
-    left: -100dvw;
-    // left: 50px;
+    left: -300%;
+    visibility: hidden;
     bottom: 100px;
     transition: all 0.5s ease-in-out;
     .red {
@@ -234,6 +234,8 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 
 
 
-@media(max-width: 650px) {
-
+@media(max-width: 720px) {
+    .errorPopup{
+        left: -300%;
+    }
 }
