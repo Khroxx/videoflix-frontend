@@ -2,9 +2,26 @@ header{
     display: flex;
     flex-direction: row;
     height: 108px;
-    width: 1440px;
-    min-width: 1440px;
+    width: calc(100dvw - 192px);
+    min-width: calc(100dvw - 192px);
     justify-content: space-between;
     align-items: center;
     padding: 10px 96px;
+}
+
+@media (orientation: landscape) {
+    header{
+        height: 60px;
+        padding: 10px 20px;
+        width: calc(100dvw - 40px);
+        min-width: calc(100dvw - 40px);
+    }
+}
+
+@media (max-width: 650px) {
+    header{
+        padding: 10px 20px;
+        width: calc(100dvw - 40px);
+        min-width: calc(100dvw - 40px);
+    }
 }

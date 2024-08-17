@@ -6,16 +6,9 @@
             @if(activated){
                 <p class="black">Your account has been activated, please log in</p>
             }
-            <!-- @if(wrongEmail){
-                <p class="errorMsg">This Email is not registered.</p>
-            } -->
-           
         </div>
         <div>
             <input type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
-            <!-- @if(wrongPw){
-                <p class="errorMsg">Password does not match the email!</p>
-            } -->
         </div>
     </form>
     <div class="remember-container">

@@ -132,7 +132,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     border-radius: 20px;
     position: absolute;
     z-index: 5;
-    left: -100%;
+    left: -100dvw;
     // left: 50px;
     bottom: 100px;
     transition: all 0.5s ease-in-out;
@@ -230,4 +230,10 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     top: 100px;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+
+
+@media(max-width: 650px) {
+
 }
