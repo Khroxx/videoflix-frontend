@@ -215,6 +215,14 @@ app-login, app-forgot-password, app-signup, app-reset-password{
         }
     }
 }
+@media(orientation: landscape){
+    .errorPopup{
+        height: 70px;
+        >img, .closeBtn{
+            top: 30px;
+        }
+    }
+}
 
 
 // VIDEO JS
