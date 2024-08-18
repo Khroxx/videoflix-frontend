@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
-import { error } from 'node:console';
 
 @Component({
   selector: 'app-login',
@@ -63,31 +62,56 @@ export class LoginComponent {
   }     
 
   showEmailNotActivatedPopup(){
-    this.resendEmailPopup.nativeElement.style.visibility = 'visible';
-    this.resendEmailPopup.nativeElement.style.left = '50px';
+    this.resendEmailPopup.nativeElement.style.display = 'flex'
+    if(window.innerWidth <= 768) {
+      this.resendEmailPopup.nativeElement.style.bottom = '0';
+      this.resendEmailPopup.nativeElement.style.left = '0';
+    } else {
+      this.resendEmailPopup.nativeElement.style.left = '50px';
+      this.resendEmailPopup.nativeElement.style.bottom = '100px';
+    }
   }
 
   showWrongMessage(message: string){
-    this.errorMsg.nativeElement.style.visibility = 'visible';
     this.wrongMsg = message;
-    this.errorMsg.nativeElement.style.left = '50px';
+    this.errorMsg.nativeElement.style.display = 'flex'
+    if (window.innerWidth <= 768){
+      this.errorMsg.nativeElement.style.bottom = '0';
+      this.errorMsg.nativeElement.style.left = '0';
+    } else {
+      this.errorMsg.nativeElement.style.left = '50px';
+      this.errorMsg.nativeElement.style.bottom = '100px';
+    }
     setTimeout(() => {
       this.closeErrorPopup()
     }, 3000);
   }
 
   closePopup(){
-      this.resendEmailPopup.nativeElement.style.left = '-300%';
-      setTimeout(() => {
-        this.resendEmailPopup.nativeElement.style.visibility = 'hidden';
-      }, 500);
+    if(window.innerWidth <= 768){
+      this.resendEmailPopup.nativeElement.style.bottom = '-200%';
+      this.resendEmailPopup.nativeElement.style.left = '0';
+    } else {
+      this.resendEmailPopup.nativeElement.style.left = '-200%';
+      this.resendEmailPopup.nativeElement.style.bottom = '0';
+
+    }
+    setTimeout(() => {
+      this.resendEmailPopup.nativeElement.style.display = 'none'
+    }, 500);
   }
 
   closeErrorPopup(){
-      this.errorMsg.nativeElement.style.left = '-300%';
-      setTimeout(() => {
-        this.errorMsg.nativeElement.style.visibility = 'hidden';
-      }, 500);
+    if(window.innerWidth <= 768){
+      this.errorMsg.nativeElement.style.left = '0';
+      this.errorMsg.nativeElement.style.bottom = '-200%';
+    } else {
+      this.errorMsg.nativeElement.style.bottom = '0';
+      this.errorMsg.nativeElement.style.left = '-200%';
+    }
+    setTimeout(() => {
+      this.errorMsg.nativeElement.style.display = 'none'
+    }, 500);
   }
 
   resendEmailActivationLink(){

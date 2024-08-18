@@ -122,7 +122,6 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 }
 
 .errorPopup {
-    display: flex;
     align-items: center;
     background-color: #2E3EDF;
     padding: 24px 32px;
@@ -133,7 +132,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     position: absolute;
     z-index: 5;
     left: -300%;
-    visibility: hidden;
+    display: none;
     bottom: 100px;
     transition: all 0.5s ease-in-out;
     .red {
@@ -177,6 +176,43 @@ app-login, app-forgot-password, app-signup, app-reset-password{
         border: unset;
         background-color: rgba(0,0,0,0);
         cursor: pointer;
+    }
+}
+
+@media(max-width: 768px) {
+    .errorPopup{
+        height: 232px;
+        flex-direction: column;
+        justify-content: center;
+        left: 0px;
+        padding: 32px 24px;
+        width: calc(100% - 48px);
+        bottom: -200%;
+        border-radius: 20px 20px 0 0;
+        >img{
+            position: absolute;
+            left: 40px;
+            top: 100px;
+        }
+        >span{
+            text-align: center;
+        }
+        .red{
+            position: absolute;
+            top: 0;
+            height: 16px;
+            width: 100%;
+            left: 0;
+            z-index: 6;
+        }
+        .divider{
+            display: none;
+        }
+        .closeBtn{
+            position: absolute;
+            right: 40px;
+            top: 100px;
+        }
     }
 }
 
@@ -234,8 +270,8 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 
 
 
-@media(max-width: 720px) {
-    .errorPopup{
-        left: -300%;
-    }
-}
+// @media(max-width: 720px) {
+//     .errorPopup{
+//         left: -300%;
+//     }
+// }
