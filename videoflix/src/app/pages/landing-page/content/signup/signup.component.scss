@@ -40,17 +40,23 @@ form{
     }
 }
 
-@media(orientation: landscape){
-
-}
-
 @media (max-width: 650px){
     .signup-container{
         width: calc(95% - 48px);
         padding: 43px 24px;
-        gap: 22px;
+        gap: 32px;
     }
     form{
         gap: 16px;
+        >div{
+            display: flex;
+            justify-content: center;
+        }
+        input{
+            width: calc(90% - 48px);
+        }
     }
+}
+@media(max-width: 450px){
+
 }
