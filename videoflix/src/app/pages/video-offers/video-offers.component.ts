@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, Input, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Inject, Input, PLATFORM_ID, Renderer2, ViewChild } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { VideoService } from '../../services/video.service';
@@ -16,11 +16,13 @@ import { isPlatformBrowser } from '@angular/common';
   styleUrl: './video-offers.component.scss'
 })
 export class VideoOffersComponent {
+  @ViewChild('allVideos') allVideos!: ElementRef;
   @ViewChild('newOnVideoflix') newOnVideflixCategory!: ElementRef;
   @ViewChild('documentary') documentaryCategory!: ElementRef;
   @ViewChild('drama') dramaCategory!: ElementRef;
   @ViewChild('romance') romanceCategory!: ElementRef;
   @ViewChild('previewThumbnail') previewThumbnail!: ElementRef;
+  @ViewChild('infoContainer') infoContainer!: ElementRef;
   @ViewChild('headline') previewHeadline!: ElementRef;
   @ViewChild('description') previewDescription!: ElementRef;
   @ViewChild('previewButton') previewButton!: ElementRef;
@@ -59,17 +61,18 @@ export class VideoOffersComponent {
 
   async renderPreview() {
     let allVideos = await this.videoService.getVideos();
-    let storedPreview = localStorage.getItem('currentPreview');
-    if (storedPreview) {
-      this.currentPreview = JSON.parse(storedPreview);
-
-    } else {
-      this.currentPreview = allVideos[0];
+    if (isPlatformBrowser(this.platformId)) {
+      let storedPreview = localStorage.getItem('currentPreview');
+      if (storedPreview) {
+        this.currentPreview = JSON.parse(storedPreview);
+      } else {
+        this.currentPreview = allVideos[0];
+      }
+      this.currentPreviewThumbnail = environment.baseUrl + this.currentPreview.thumbnail;
+      setTimeout(() => {
+        this.startTrailer(this.currentPreview.title)
+      }, 1000);
     }
-    this.currentPreviewThumbnail = environment.baseUrl + this.currentPreview.thumbnail;
-    setTimeout(() => {
-      this.startTrailer(this.currentPreview.title)
-    }, 1000);
   }
 
   async renderVideos() {
@@ -81,7 +84,6 @@ export class VideoOffersComponent {
         let thumbnailElement = this.renderer.createElement('img');
         this.renderer.setAttribute(thumbnailElement, 'src', `${environment.baseUrl}${video.thumbnail}`);
         this.renderer.setAttribute(thumbnailElement, 'alt', 'VideoThumbnail');
-        this.renderer.addClass(thumbnailElement, 'thumbnailVideo');
         this.renderer.listen(thumbnailElement, 'click', () => {
           this.openPreview(video.id);
         });
@@ -126,9 +128,29 @@ export class VideoOffersComponent {
     this.currentPreview = await this.videoService.getSingleVideo(videoId);
     this.currentPreviewThumbnail = environment.baseUrl + this.currentPreview.thumbnail;
     localStorage.setItem('currentPreview', JSON.stringify(this.currentPreview));
+    if (window.innerWidth < 768) {
+      this.showMobilePreview();
+    }
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
+      this.showMobilePreview();
+      this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'none')
+    }
     setTimeout(() => {
       this.startTrailer(this.currentPreview.title);
     }, 500);
+  }
+
+  showMobilePreview(){
+    this.renderer.addClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
+    this.renderer.addClass(this.infoContainer.nativeElement, 'show-mobile-info');
+  }
+
+  closeMobilePreview(){
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
+      this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
+    }
+    this.renderer.removeClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
+    this.renderer.removeClass(this.infoContainer.nativeElement, 'show-mobile-info');
   }
 
   async startTrailer(title: string) {
@@ -168,5 +190,18 @@ export class VideoOffersComponent {
   async playPreview(id: string) {
     this.renderer.removeClass(this.videotrailer.nativeElement, 'show-trailer');
     this.router.navigate(['videos/watching', id])
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
+      if (this.previewThumbnail.nativeElement.classList.contains('show-mobile-preview')){
+        this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'none')
+      } else {
+        this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
+      }
+    } else {
+      this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
+    }
   }
 }

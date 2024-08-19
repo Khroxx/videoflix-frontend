@@ -9,9 +9,10 @@
             <video #videotrailer class="trailer-video video-js" data-setup="{}"></video>
         </div>
         <img [src]="currentPreviewThumbnail" alt="">
+        <button class="back-btn" (click)="closeMobilePreview()"><img src="img/arrow_back.png" alt="Back"></button>
     </div>
 
-    <div class="info-container">
+    <div class="info-container" #infoContainer>
         <div class="preview-info">
             <h1 #headline>{{ currentPreview.title }}</h1>
             <p class="description" #description>{{ currentPreview.description }}</p>
@@ -19,7 +20,7 @@
         </div>
     </div>
 
-    <div class="videos">
+    <div class="videos" #allVideos>
         <div class="video-content">
             <h2>New on Videoflix</h2>
             <div class="thumbnails" #newOnVideoflix>
