@@ -1,51 +1,77 @@
 <section #videoContainer>
     <div class="popup-controls show" #popupControls>
         <button (click)="closeVideo()"><img src="img/arrow_back.png" alt=""></button>
-        <button (click)="toggleFullscreen()"><img src="img/fullscreen.png" alt=""></button>
+        <button class="fullscreen-btn" (click)="toggleFullscreen()"><img src="img/fullscreen.png" alt=""></button>
     </div>
     <header class="header-controls hidden" #headerControls>
         <button (click)="closeVideo()" class="backBtn"><img src="img/arrow_back.png" alt=""></button>
-        <!-- <div class="vjs-progress-control vjs-control">
-            <div class="vjs-progress-holder vjs-slider vjs-slider-horizontal" role="slider"></div> 
-        </div> -->
         <img src="img/logo_only.png" alt="">
     </header>
     <div class="videoplayer">
-        
-            <video #videoplayer class="video-js" data-setup="{}" (click)="playVideo()" (timeupdate)="updateTime()" preload="auto"></video>
-        
-            @if (isLoading){
-                <div class="loading">
-                    <div class="spinner" #loadingSpinner></div>
+
+        <video #videoplayer class="video-js" data-setup="{}" (click)="playVideo()" (timeupdate)="updateTime()"
+            preload="auto"></video>
+
+        @if (isLoading){
+        <div class="loading">
+            <div class="spinner" #loadingSpinner></div>
+        </div>
+        }
+        @if (showPlayPauseAnimation){
+        <div class="playpause" [ngClass]="{'animate': showPlayPauseAnimation}">
+            <img class="playPauseOverlay" [src]="playPauseOverlayImage" alt="Play/Pause">
+        </div>
+        }
+
+    </div>
+    <div class="mobile-controls" #mobileControls>
+        <div class="top-controls">
+            <div class="logo-name">
+                <img src="img/logo_only.png" alt="">
+                <p>{{ currentVideo?.title }}</p>
+            </div>
+            <button (click)="closeVideo()"><img src="img/close_small.png" alt=""></button>
+        </div>
+        <div class="mid-controls">
+            <button (click)="back10()"><img src="img/replay_10.png" alt=""></button>
+            <button (click)="playVideo()"><img [src]="playPauseImage" alt=""></button>
+            <button (click)="forward10()"><img src="img/forward_10.png" alt=""></button>
+        </div>
+        <div class="bottom-controls">
+            <div class="timeline">
+                <div class="timebar">
+                    <div class="timebar-background"></div>
+                    <div class="timebar-filled" #timebar></div>
                 </div>
-            }
-            @if (showPlayPauseAnimation){
-                <div class="playpause" [ngClass]="{'animate': showPlayPauseAnimation}">
-                    <img class="playPauseOverlay" [src]="playPauseOverlayImage" alt="Play/Pause">  
+            </div>
+            <div class="mobile-buttons">
+                <div>
+                    <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
+                    <select #qualityMenu class="qualityMenu" (change)="setVideoQuality($event)">
+                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']"
+                            [value]="quality">
+                            {{ quality }}
+                        </option>
+                    </select>
                 </div>
-                }
-        
+                <div>
+                    <button (click)="changePlaybackSpeed()"><img src="img/speed.png" alt=""></button>
+                    <select #speedMenu class="speedMenu" (change)="setPlaybackSpeed($event)">
+                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">
+                            {{ speed }}x</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
     </div>
     <footer class="footer-controls hidden" #footerControls>
-        <div class="timeline">  
+        <div class="timeline">
             <div class="timebar">
                 <div class="timebar-background"></div>
                 <div class="timebar-filled" #timebar></div>
             </div>
-            <!-- <div class="timedata">
-                {{ formattedTime }}
-            </div> -->
-            <!-- <div class="current-time-display">
-                <div class="vjs-current-time vjs-time-control vjs-control">
-                    <span class="vjs-current-time-display" role="presentation"></span>
-                </div>
-                <div class="vjs-time-control vjs-time-divider">
-                    <span>/</span>
-                </div>
-                <div class="vjs-duration vjs-time-control vjs-control">
-                    <span class="vjs-duration-display" role="presentation"></span>
-                </div>
-            </div> -->
         </div>
 
         <div class="button-container">
@@ -55,28 +81,29 @@
                 <button (click)="forward10()"><img src="img/forward_10.png" alt=""></button>
                 <div>
                     <button (click)="showVolume()"><img src="img/volume_up.png" alt=""></button>
-                    <div class="volume-container">
-                        <input type="range" class="volume-bar" orient="vertical" min="0" max="100" value="50"
+                    <div #volumeContainer class="volume-container">
+                        <input type="range" class="volume-bar" orient="vertical" min="0" max="1" value="0.5" step="0.01"
                             (input)="changeVolume($event)">
                     </div>
                 </div>
             </div>
             <h1>
-                {{ videoData?.title || 'Movie Name' }}
+                {{ currentVideo?.title || 'Movie Name' }}
             </h1>
             <div class="screen-buttons">
                 <!-- <button (click)="toggle    Subtitles()"><img src="img/subtitles.png" alt=""></button> -->
-                 <div>
+                <div>
                     <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
-                    <select id="qualityMenu" (change)="setVideoQuality($event)">
-                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']" [value]="quality">
+                    <select #qualityMenu class="qualityMenu" (change)="setVideoQuality($event)">
+                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']"
+                            [value]="quality">
                             {{ quality }}
                         </option>
                     </select>
-                 </div>
+                </div>
                 <div>
                     <button (click)="changePlaybackSpeed()"><img src="img/speed.png" alt=""></button>
-                    <select id="speedMenu" (change)="setPlaybackSpeed($event)">
+                    <select #speedMenu class="speedMenu" (change)="setPlaybackSpeed($event)">
                         <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">
                             {{ speed }}x</option>
                     </select>

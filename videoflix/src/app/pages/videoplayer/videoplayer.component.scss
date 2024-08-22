@@ -35,11 +35,15 @@ img {
     height: 48px;
 }
 
-video {
+.video-js {
     width: 100%;
     height: 100%;
     position: relative;
     z-index: 2;
+}
+.vjs-tech{
+    width: 100%;
+    height: 100%;
 }
 
 .videoplayer {
@@ -109,6 +113,9 @@ footer {
         flex-direction: row;
         gap: 24px;
         position: relative;
+        >div{
+            position: relative;
+        }
     }
 
     h1 {
@@ -182,9 +189,12 @@ button {
     transform: translateY(100%);
 }
 
-.button-click-animation {
-    animation: buttonclick 0.3s ease-in-out;
+button:active{
+    animation: buttonclick 0.4s ease-in-out;
+
 }
+// .button-click-animation {
+// }
 
 .volume-container {
     position: relative;
@@ -195,13 +205,13 @@ button {
     position: absolute;
     bottom: 150px;
     left: 30px;
-    width: 8px;
+    // width: 8px;
     height: 100px;
     background: #ddd;
     outline: none;
     opacity: 0.7;
     transition: opacity .2s;
-    writing-mode: bt-lr;
+    // writing-mode: bt-lr;
 }
 
 .volume-bar::-webkit-slider-thumb {
@@ -220,25 +230,28 @@ button {
     cursor: pointer;
 }
 
-#speedMenu, #qualityMenu {
+.speedMenu,
+.qualityMenu {
     position: absolute;
     bottom: 150px;
-    left: 80px;
     display: none;
 }
 
-.speed-selection, .quality-selection {
+.speed-selection,
+.quality-selection {
     position: relative;
 
 }
 
-.hd-icon{
+.hd-icon {
     height: 48px;
-    >img{
+
+    >img {
         height: 36px !important;
     }
 }
-#qualityMenu{
+
+#qualityMenu {
     position: absolute;
     bottom: 150px;
     left: -40px;
@@ -294,13 +307,94 @@ button {
     pointer-events: none;
     position: absolute;
     z-index: 10;
-
-
 }
+
 
 .playpause.animate img {
     opacity: 1;
     animation: fadeInAndOut 1s forwards
+}
+
+.spinner-fullscreen {
+    width: 120px;
+    height: 120px;
+    border: 14px solid #f3f3f3;
+    border-top: 14px solid #3498db;
+}
+
+.mobile-controls {
+    transition: all ease-in-out;
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 20;
+    transition: all 0.5s ease-out;
+
+    >.top-controls {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: calc(100% - 32px);
+        height: calc(80px - 20px);
+        padding: 10px 16px;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    >.mid-controls {
+        display: flex;
+        flex-direction: row;
+        width: 60%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        align-items: center;
+        justify-content: space-between;
+        // gap: 104px;
+    }
+
+    >.bottom-controls {
+        display: flex;
+        flex-direction: column;
+        justify-self: center;
+        padding: 0px 16px 8px 16px;
+        width: calc(100% - 32px);
+        height: 64px;
+        justify-content: space-between;
+        gap: 8px;
+        position: relative;
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+
+        >.mobile-buttons {
+            position: absolute;
+            justify-content: space-between;
+            align-items: center;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: row;
+        }
+    }
+}
+
+.logo-name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+
+    >p {
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 26.04px;
+        color: white;
+    }
 }
 
 @keyframes fadeInAndOut {
@@ -343,4 +437,55 @@ button {
     }
 }
 
-// @keyframes hoverButton{}
+
+@media(max-width: 768px) {
+    section {
+        top: 0;
+        bottom: unset;
+        height: 360px !important;
+        width: 100% !important;
+        right: 0;
+        background-color: black;
+
+        &:hover {
+            transform: unset;
+        }
+    }
+
+    .fullscreen-btn {
+        display: none;
+    }
+    .playPauseOverlay{
+        width: 48px;
+        height: 48px;
+    }
+
+}
+
+@media(orientation: landscape) and (max-width: 1024px) {
+    section {
+        position: absolute;
+        width: 100% !important;
+        height: 100% !important;
+        bottom: 0;
+        right: 0;
+        background-color: black;
+        &:hover {
+            transform: scale(1);
+        }
+    }
+    // .mobile-controls{
+    //     display: block;
+    // }
+    .popup-controls {
+        display: none;
+    }
+    .playPauseOverlay{
+        width: 48px;
+        height: 48px;
+    }
+    .speedMenu, .qualityMenu{
+        bottom: 70px;
+
+    }
+}

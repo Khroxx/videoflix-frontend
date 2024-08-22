@@ -34,7 +34,7 @@ h3{
     gap: 16px;
 }
 
-@media(orientation: landscape){
+@media(orientation: landscape) and (max-width: 768px){
     h1{
         text-align: center;
         font-size: 40px;

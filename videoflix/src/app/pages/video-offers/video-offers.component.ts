@@ -161,12 +161,11 @@ export class VideoOffersComponent {
       }
       this.player = videojs(this.videotrailer.nativeElement, this.options);
       this.resetTrailerAnimation();
-
-      this.player.autoplay(true)
       this.player.src({
         src: url,
         type: 'application/x-mpegURL'
       });
+      this.player.autoplay(true)
     }
   }
 
@@ -198,9 +197,13 @@ export class VideoOffersComponent {
       if (this.previewThumbnail.nativeElement.classList.contains('show-mobile-preview')){
         this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'none')
       } else {
+        this.renderer.removeClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
+        this.renderer.removeClass(this.infoContainer.nativeElement, 'show-mobile-info');
         this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
       }
     } else {
+      this.renderer.removeClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
+      this.renderer.removeClass(this.infoContainer.nativeElement, 'show-mobile-info');
       this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
     }
   }

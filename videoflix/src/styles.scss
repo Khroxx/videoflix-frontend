@@ -236,7 +236,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 .vjs-error-dialog, .vjs-modal-dialog, .vjs-big-play-button, .vjs-hidden,
 .vjs-loading-spinner, .vjs-text-track-display, .vjs-volume-panel,
 .vjs-play-control, .vjs-seek-to-live-control, .vjs-remaining-time, 
-.vjs-fullscreen-control, .vjs-mouse-display, .vjs-play-progress{
+.vjs-fullscreen-control, .vjs-mouse-display, .vjs-play-progress, .vjs-picture-in-picture-control{
     display: none !important;
 }
 
@@ -278,8 +278,34 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 
 
 
-// @media(max-width: 720px) {
-//     .errorPopup{
-//         left: -300%;
-//     }
-// }
+@media(max-width: 768px) {
+    .video-js{
+        height: 360px;
+        video{
+            height: 360px;
+            width: 100%;
+        }
+    }
+    .vjs-current-time, .vjs-time-control, .vjs-duration{
+        left: 75%;
+    }
+    .vjs-progress-control{
+        top: 20px;
+    }
+}
+
+@media(orientation: landscape) and (max-width: 1024px){
+    .video-js{
+        height: 100%;
+        .vjs-tech{
+            height: 100%;
+            width: 100%;
+        }
+    }
+    .vjs-current-time, .vjs-time-control, .vjs-duration{
+        left: 89%;
+    }
+    .vjs-progress-control{
+        top: 20px;
+    }
+}
