@@ -20,6 +20,7 @@ export class LoginComponent {
 
   @ViewChild('resendEmail') resendEmailPopup!: ElementRef;
   @ViewChild('errorMsg') errorMsg!: ElementRef;
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
 
   constructor(
     private router: Router,
@@ -48,7 +49,6 @@ export class LoginComponent {
               localStorage.setItem('token', userData.token);
               this.router.navigate(['videos/']);
             } catch {
-              // this.wrongPw = true;
               this.showWrongMessage('The password does not match the username')
             }
           } else {
@@ -56,7 +56,6 @@ export class LoginComponent {
             this.showEmailNotActivatedPopup();
           }
       } else {
-        // this.wrongEmail = true;
         this.showWrongMessage('This email is not registered in our database')
       }})
   }     
@@ -116,5 +115,14 @@ export class LoginComponent {
 
   resendEmailActivationLink(){
     this.authService.sendEmailActivationOnly(this.email);
+  }
+
+  showPassword(){
+    let input = this.passwordInput.nativeElement;
+    if (input.type === 'password'){
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
   }
 }

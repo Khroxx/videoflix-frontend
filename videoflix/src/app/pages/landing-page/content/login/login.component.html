@@ -8,7 +8,8 @@
             }
         </div>
         <div>
-            <input type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
+            <input #passwordInput type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">
+            <img src="img/visibility.png" alt="" (click)="showPassword()">
         </div>
     </form>
     <div class="remember-container">

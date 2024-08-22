@@ -31,12 +31,22 @@ form{
         >input{
             width: 90%;
             border-radius: 12px;
+  
         }
         >p{
             position: absolute;
         }
+        >img{
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            right: 30px;
+            top: 13px;
+            cursor: pointer;
+        }
     }
 }
+
 .remember-container{
     display: flex;
     flex-direction: row;

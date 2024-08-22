@@ -5,10 +5,12 @@
             <input id="email" name="email" class="p-input" type="email" placeholder="Email Address" [(ngModel)]="email">
         </div>
         <div>
-            <input id="password" name="password1" class="p-input" type="password" placeholder="Enter a password" [(ngModel)]="password1">
+            <input #passwordInput id="password" name="password1" class="p-input" type="password" placeholder="Enter a password" [(ngModel)]="password1">
+            <img src="img/visibility.png" alt="" (click)="showPassword()">
         </div>
         <div>
-            <input id="password-confirm" name="password2" class="p-input" type="password" placeholder="Confirm password" [(ngModel)]="password2">
+            <input #passwordInput id="password-confirm" name="password2" class="p-input" type="password" placeholder="Confirm password" [(ngModel)]="password2">
+            <img src="img/visibility.png" alt="" (click)="showPassword()">
             @if(againError){
                 <p class="errorMsg"><img src="img/warning.png" alt="">Passwords must match</p>
             }

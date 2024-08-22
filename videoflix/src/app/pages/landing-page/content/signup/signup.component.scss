@@ -37,6 +37,14 @@ form{
             color: black;
             font-size: 16px;
         }
+        >img{
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            right: 30px;
+            top: 13px;
+            cursor: pointer;
+        }
     }
 }
 
