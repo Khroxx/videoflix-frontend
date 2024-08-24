@@ -1,5 +1,5 @@
 # Description
-This is basically a Netflix clone. The Frontend variant of my Project written with Angular.
+This is basically a Netflix clone. The Frontend variant of my Project written with Angular. <br>
 Register yourself, activate via the email that will be sent to you. Login to watch Movies. Reset and change your password. 
 Seeminglessly change between different qualities when watching the HLS converted Videos.
 
