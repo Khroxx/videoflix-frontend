@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 // import { devEnvironment } from '../../environments/environment.development';
 import { environment } from '../../environments/environment';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { User } from '../interfaces/user';
 import { HttpHeaders } from '@angular/common/http';
 import { Csrftoken } from '../interfaces/csrftoken';
@@ -13,33 +13,29 @@ import { Csrftoken } from '../interfaces/csrftoken';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+  ) { }
 
   public async registerUser(email: string, password: string) {
-    // DEVELOPMENT URL
     const url = environment.baseUrl + '/user/register/';
     const body = {
       "email": email,
       "password": password
     }
     return lastValueFrom(this.http.post<User>(url, body))
-
   }
 
   public async sendEmailActivationOnly(email: string) {
     const url = `${environment.baseUrl}/verify-again/`;
     const body = {
-      "email": email  
+      "email": email
     }
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
-    try {
-      return await lastValueFrom(this.http.post(url, body, { headers: headers }));
-    } catch (error) {
-      console.error('Error sending email activation:', error);
-      throw error;
-    }
+    return await lastValueFrom(this.http.post(url, body, { headers: headers }));
+
   }
 
   public async sendPasswordResetEmail(email: string) {
@@ -67,17 +63,11 @@ export class AuthService {
 
   public async isUserActive(email: string) {
     const url = environment.baseUrl + '/users/';
-    try {
-      const users = await lastValueFrom(this.http.get<User[]>(url));
-      const user = users.find(user => user.email === email);
-      return user ? user.is_active : false;
-    } catch (error) {
-      console.error('Error fetching users', error);
-      return false;
-    }
+    const users = await lastValueFrom(this.http.get<User[]>(url));
+    const user = users.find(user => user.email === email);
+    return user ? user.is_active : false;
+
   }
-
-
 
   public emailExists(email: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
@@ -117,9 +107,6 @@ export class AuthService {
     }
   }
 
-  ngOnDestroy(): void {
-  }
-
   public async fetchCSRFToken() {
     const url = environment.baseUrl + '/get-csrf-token/';
     let resp = this.http.get<({ csrf_token: string })>(url).subscribe({
@@ -130,11 +117,20 @@ export class AuthService {
       error: (error) => { console.error('couldnt fetch csrf token', error) }
     })
   }
-
   public async getCSRFToken(): Promise<Csrftoken> {
     const url = environment.baseUrl + '/get-csrf-token/';
     const response = await lastValueFrom(this.http.get<Csrftoken>(url));
     return response;
   }
 
+  // public async fetchCSRFToken() {
+  //   const url = environment.baseUrl + '/get-csrf-token/';
+  //   let resp = this.http.get<({ csrf_token: string })>(url).subscribe({
+  //     next: (response) => {
+  //       localStorage.setItem('csrf-token', response.csrf_token)
+  //     },
+
+  //     error: (error) => { console.error('couldnt fetch csrf token', error) }
+  //   })
+  // }
 }

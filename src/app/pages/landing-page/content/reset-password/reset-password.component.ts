@@ -24,7 +24,6 @@ export class ResetPasswordComponent {
     private router: Router,
     private sharedService: SharedFunctionsService,
     private authService: AuthService
-
   ){}
 
   ngOnInit() {
@@ -45,11 +44,10 @@ export class ResetPasswordComponent {
           }, 1000);
         })
         .catch((error) => {
-          // console.error('couldnt change password', error);
+          console.error('could not change password', error);
         });
     } else {
       this.wrong = true; 
-      // console.error('couldnt change password');
       return
     }
   }

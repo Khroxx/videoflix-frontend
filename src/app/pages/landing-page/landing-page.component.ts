@@ -16,7 +16,6 @@ export class LandingPageComponent {
   backgroundImg: string = 'img/greet.jpeg';
   private imgSubscription!: Subscription;
 
-
   constructor(
     private sharedService: SharedFunctionsService,
     private changeDetectorRef: ChangeDetectorRef
@@ -29,8 +28,6 @@ export class LandingPageComponent {
     });
 
   }
-
-
 
   ngOnDestroy(): void {
     this.imgSubscription.unsubscribe();

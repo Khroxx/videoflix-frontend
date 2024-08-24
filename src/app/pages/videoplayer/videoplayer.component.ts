@@ -55,8 +55,7 @@ export class VideoplayerComponent {
     private router: Router,
     private renderer: Renderer2,
     @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-  }
+  ) {}
 
   async ngOnInit() {
     this.isLoading = true;
@@ -83,7 +82,6 @@ export class VideoplayerComponent {
 
   ngOnDestroy(): void {
     this.stopUpdatingTimebar();
-    this.videoplayer.nativeElement.removeEventListener('ended', this.onVideoEnded.bind(this));
     if (this.player) {
       this.player.dispose();
     }
@@ -108,7 +106,6 @@ export class VideoplayerComponent {
       this.player.autoplay(true)
       this.player.src({src: url, type: 'application/x-mpegURL'});
       this.isLoading = false;
-      this.player.on('ended', this.onVideoEnded.bind(this)); // für dev
     }
   }
 
@@ -162,15 +159,6 @@ export class VideoplayerComponent {
     }
   }
 
-  //für dev, für deployment weg
-  onVideoEnded() {
-    this.player.currentTime(0)
-    this.player.pause()
-    this.isPlaying = false;
-    this.playPauseImage = 'img/play_arrow.png';
-    this.updateTimebar();
-  }
-
   back10() {
     const currentTime = this.player.currentTime();
     if (currentTime !== undefined) {
@@ -194,7 +182,6 @@ export class VideoplayerComponent {
     }
   }
 
-  //noch testen
   changeVolume(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     const volume = parseFloat(inputElement.value)
@@ -317,7 +304,6 @@ export class VideoplayerComponent {
     }
   }
 
-  //eventuell weg und nur loadingspinner
   checkAndHideLoadedPercentage() {
     const percentage = document.querySelectorAll('.vjs-control-text-loaded-percentage');
     const control = document.querySelectorAll('.vjs-progress-control');
