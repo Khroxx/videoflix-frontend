@@ -6,8 +6,8 @@ Seeminglessly change between different qualities when watching the HLS converted
 
 # Prerequisites
 must haves: <br>
-. node.js <br>
-. angular <br>
+- node.js <br>
+- angular <br>
 
 
 # Installation

@@ -9,12 +9,12 @@ import { ResetPasswordComponent } from './pages/landing-page/content/reset-passw
 import { VideoplayerComponent } from './pages/videoplayer/videoplayer.component';
 import { ImprintComponent } from './shared/imprint/imprint.component';
 import { PrivacyPolicyComponent } from './shared/privacy-policy/privacy-policy.component';
+import { AuthGuardService } from './services/auth-guard.service';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
     { path: 'welcome', component: LandingPageComponent, 
         children: [
-            // { path: '', redirectTo: 'greet', pathMatch: 'full'},
             { path: '', component: GreetingComponent },
             { path: 'login', component: LoginComponent },
             { path: 'signup', component: SignupComponent },
@@ -23,7 +23,7 @@ export const routes: Routes = [
             { path: 'reset-password', component: ResetPasswordComponent }, // fürs testen
         ]
     },
-    { path: 'videos', component: VideoOffersComponent, children: [
+    { path: 'videos', component: VideoOffersComponent, canActivate: [AuthGuardService], children: [
         { path: 'watching/:id', component: VideoplayerComponent }
     ] },
     { path: 'info', children:

@@ -101,6 +101,10 @@ export class AuthService {
     return lastValueFrom(postrequest)
   }
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token')
+  }
+
   async logoutUser(token: string) {
     const url = environment.baseUrl + '/logout/';
     const headers = new HttpHeaders({
@@ -108,7 +112,6 @@ export class AuthService {
     });
     try {
       this.http.get<User[]>(url, { headers });
-      // this.csrfToken = '';
     } catch (error) {
       console.error(error)
     }
