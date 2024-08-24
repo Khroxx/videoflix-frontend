@@ -5,7 +5,6 @@ import { lastValueFrom } from 'rxjs';
 import { Video } from '../interfaces/video';
 import { Csrftoken } from '../interfaces/csrftoken';
 
-
 @Injectable({
   providedIn: 'root'
 })

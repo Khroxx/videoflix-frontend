@@ -21,6 +21,10 @@ export class HeaderComponent {
     this.isWindowSizeSmall();
   }
 
+  navigateToHome(){
+    this.router.navigate(['welcome'])
+  }
+
   navigateToLogin(){
     this.router.navigate(['welcome/login'])
   }

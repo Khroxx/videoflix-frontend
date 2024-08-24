@@ -25,8 +25,6 @@ export class GreetingComponent {
 
   }
 
-  // Send User to SignUp page
-  // IF User wrote email into Input, Input value will be sent to SignUp page
   navigateToSignUp(){
     if (this.email){
       this.router.navigate(['welcome/signup'], { queryParams: { email: this.email } });

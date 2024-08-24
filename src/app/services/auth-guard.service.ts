@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuardService {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   canActivate(): boolean {
-    if (this.authService.isLoggedIn()) {
-      return true;
-    } else {
-      this.router.navigate(['welcome/login']);
-      return false;
+    if (isPlatformBrowser(this.platformId)) {
+      if (this.authService.isLoggedIn()) {
+        return true;
+      } else {
+        this.router.navigate(['welcome/login']);
+        return false;
+      }
     }
+    return false;
   }
 }

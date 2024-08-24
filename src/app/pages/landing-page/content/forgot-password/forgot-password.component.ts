@@ -23,13 +23,11 @@ export class ForgotPasswordComponent {
   ngOnInit(): void {
     this.sharedService.updateBackgroundImage('img/login.jpeg')
   }
-
-
-
+  
   async sendPasswordResetEmail(){
     this.authService.emailExists(this.email).then(async exists => {
       if (exists) {
-        await this.authService.fetchCSRFToken();
+        await this.authService.getCSRFToken(); // vllt doch wieder fetchcsrftoken
         let userData: any = await this.authService.sendPasswordResetEmail(this.email);
         this.passwordChanged = true;
       } else {

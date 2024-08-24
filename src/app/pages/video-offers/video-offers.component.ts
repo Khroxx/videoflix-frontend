@@ -40,9 +40,7 @@ export class VideoOffersComponent {
 
   currentPreview: any = {};
   currentPreviewThumbnail: any = '';
-
   player!: Player
-
 
   constructor(
     private videoService: VideoService,
@@ -50,9 +48,7 @@ export class VideoOffersComponent {
     private router: Router,
     private renderer: Renderer2,
     @Inject(PLATFORM_ID) private platformId: Object
-
-  ) {
-  }
+  ) { }
 
   async ngOnInit() {
     await this.renderVideos();
@@ -79,17 +75,21 @@ export class VideoOffersComponent {
     let videos: Video[] = await this.videoService.getVideos();
     this.clearCategories();
     videos.forEach(video => {
-      let category = this.getCategory(video.category);
-      if (category) {
-        let thumbnailElement = this.renderer.createElement('img');
-        this.renderer.setAttribute(thumbnailElement, 'src', `${environment.baseUrl}${video.thumbnail}`);
-        this.renderer.setAttribute(thumbnailElement, 'alt', 'VideoThumbnail');
-        this.renderer.listen(thumbnailElement, 'click', () => {
-          this.openPreview(video.id);
-        });
-        this.renderer.appendChild(category.nativeElement, thumbnailElement)
-      }
+      this.createThumbnails(video)
     });
+  }
+
+  createThumbnails(video: Video) {
+    let category = this.getCategory(video.category);
+    if (category) {
+      let thumbnailElement = this.renderer.createElement('img');
+      this.renderer.setAttribute(thumbnailElement, 'src', `${environment.baseUrl}${video.thumbnail}`);
+      this.renderer.setAttribute(thumbnailElement, 'alt', 'VideoThumbnail');
+      this.renderer.listen(thumbnailElement, 'click', () => {
+        this.openPreview(video.id);
+      });
+      this.renderer.appendChild(category.nativeElement, thumbnailElement)
+    }
   }
 
   clearCategories() {
@@ -107,7 +107,6 @@ export class VideoOffersComponent {
     }
   }
 
-
   getCategory(category: string): ElementRef | null {
     switch (category) {
       case 'New on Videoflix':
@@ -123,7 +122,6 @@ export class VideoOffersComponent {
     }
   }
 
-
   async openPreview(videoId: any) {
     this.currentPreview = await this.videoService.getSingleVideo(videoId);
     this.currentPreviewThumbnail = environment.baseUrl + this.currentPreview.thumbnail;
@@ -131,7 +129,7 @@ export class VideoOffersComponent {
     if (window.innerWidth < 768) {
       this.showMobilePreview();
     }
-    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth) {
       this.showMobilePreview();
       this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'none')
     }
@@ -140,13 +138,13 @@ export class VideoOffersComponent {
     }, 500);
   }
 
-  showMobilePreview(){
+  showMobilePreview() {
     this.renderer.addClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
     this.renderer.addClass(this.infoContainer.nativeElement, 'show-mobile-info');
   }
 
-  closeMobilePreview(){
-    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
+  closeMobilePreview() {
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth) {
       this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'flex')
     }
     this.renderer.removeClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
@@ -193,8 +191,8 @@ export class VideoOffersComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth){
-      if (this.previewThumbnail.nativeElement.classList.contains('show-mobile-preview')){
+    if (window.innerWidth < 1000 && window.innerHeight < window.innerWidth) {
+      if (this.previewThumbnail.nativeElement.classList.contains('show-mobile-preview')) {
         this.renderer.setStyle(this.allVideos.nativeElement, 'display', 'none')
       } else {
         this.renderer.removeClass(this.previewThumbnail.nativeElement, 'show-mobile-preview');
