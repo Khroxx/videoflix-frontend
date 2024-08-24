@@ -2,6 +2,7 @@
 logs
 *.log
 environments
+documentation
 .vscode
 npm-debug.log*
 yarn-debug.log*
