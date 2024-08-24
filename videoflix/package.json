@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:videoflix": "node dist/videoflix/server/server.mjs"
+    "serve:ssr:videoflix": "node dist/videoflix/server/server.mjs",
+    "compodoc": "npx compodoc -p tsconfig.doc.json -n \"Videoflix Documentation\""
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-server": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@angular/ssr": "^18.0.5",
+    "compodoc": "^0.0.41",
     "express": "^4.18.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

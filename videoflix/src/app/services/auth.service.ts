@@ -12,9 +12,6 @@ import { Csrftoken } from '../interfaces/csrftoken';
   providedIn: 'root'
 })
 export class AuthService {
-  // csrfToken: string = '';
-  // const headers = { 'Contect-Type': 'application/json'};
-
 
   constructor(private http: HttpClient) { }
 
@@ -129,7 +126,6 @@ export class AuthService {
 
       error: (error) => { console.error('couldnt fetch csrf token', error) }
     })
-
   }
 
   public async getCSRFToken(): Promise<Csrftoken> {
