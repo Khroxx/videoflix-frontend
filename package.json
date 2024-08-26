@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href /projects/videoflix/",
+    "build": "ng build",
+    "build:prod": "ng build --base-href /projects/videoflix/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:videoflix": "node dist/videoflix/server/server.mjs",
