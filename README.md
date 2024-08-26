@@ -32,7 +32,7 @@ ng s
 
 # Compodoc documentation
 If you're interested in documentation: <br>
-https://bari-sopa.com/projects/videoflix/docs/index.html
+https://bari-sopa.com/docs/frontend/videoflix/
 
 ## Information
 STARTED : 14.07.24 <br>
