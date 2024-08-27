@@ -22,7 +22,7 @@ export class VideoplayerComponent {
   @ViewChild('loadingSpinner') loadingSpinner!: ElementRef;
   @ViewChild('mobileControls') mobileControls!: ElementRef;
   @ViewChild('volumeContainer') volumeContainer!: ElementRef;
-  @ViewChild('timebar') timebar!: ElementRef;
+  @ViewChildren('timebar') timebars!: QueryList<ElementRef>;
   @ViewChildren('speedMenu') speedMenu!: QueryList<ElementRef>;
   @ViewChildren('qualityMenu') qualityMenu!: QueryList<ElementRef>;
 
@@ -132,16 +132,21 @@ export class VideoplayerComponent {
   updateTimebar() {
     const currentTime: any = this.player.currentTime();
     const duration: any = this.player.duration()
-    const percentage = (currentTime / duration) * 100;
+    const percentage = Math.floor((currentTime / duration) * 100);
     this.updateTime();
     this.updateTimebarUI(percentage);
   }
 
   updateTimebarUI(percentage: number) {
-    const timebar = this.timebar.nativeElement;
-    if (timebar) {
-      timebar.style.width = `${percentage}%`;
-    }
+    this.timebars.forEach((timebar) => {
+      const nativeElement = timebar.nativeElement;
+      if (nativeElement) {
+        this.renderer.setStyle(nativeElement, 'width', `${percentage}%`);
+        if (nativeElement.style.width == '100%') {
+          this.stopUpdatingTimebar();
+        }
+      }
+    });
   }
 
   playVideo() {
