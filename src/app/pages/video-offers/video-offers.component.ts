@@ -176,7 +176,6 @@ export class VideoOffersComponent {
   }
 
   logout() {
-    // let token = localStorage.getItem('token')
     let token = this.authService.getToken();
     if (token) {
       this.authService.logoutUser(token)

@@ -21,7 +21,7 @@ npm install
 ```
 3. Configure Environment
 ```bash
-ng g environment environments
+ng g environments
 ```
 and set local backend url to:
 ```bash
