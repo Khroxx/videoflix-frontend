@@ -92,7 +92,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('token')
+    return !!this.getToken()
+  }
+
+  getToken():string | null {
+    return localStorage.getItem('token') || sessionStorage.getItem('token');
   }
 
   async logoutUser(token: string) {
@@ -105,6 +109,7 @@ export class AuthService {
     } catch (error) {
       console.error(error)
     }
+
   }
 
   public async getCSRFToken(): Promise<Csrftoken> {

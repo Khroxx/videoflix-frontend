@@ -27,7 +27,7 @@ export class ForgotPasswordComponent {
   async sendPasswordResetEmail(){
     this.authService.emailExists(this.email).then(async exists => {
       if (exists) {
-        await this.authService.getCSRFToken(); // vllt doch wieder fetchcsrftoken
+        await this.authService.getCSRFToken(); 
         let userData: any = await this.authService.sendPasswordResetEmail(this.email);
         this.passwordChanged = true;
       } else {

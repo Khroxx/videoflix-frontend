@@ -16,6 +16,7 @@ export class LoginComponent {
   wrongMsg: string = '';
   password: string = '';
   activated: boolean = false;
+  rememberMe: boolean = false;
 
   @ViewChild('resendEmail') resendEmailPopup!: ElementRef;
   @ViewChild('errorMsg') errorMsg!: ElementRef;
@@ -37,6 +38,24 @@ export class LoginComponent {
         this.showWrongMessage('Your account has been activated, please log in')
       }
     });
+    this.getRememberedUser();
+    this.checkRememberMe()
+  }
+
+  checkRememberMe(){
+    if (this.rememberMe){
+      localStorage.setItem('email', this.email)
+    } else {
+      localStorage.removeItem('email')
+    }
+  }
+
+  getRememberedUser(){
+    let savedEmail = localStorage.getItem('email');
+    if (savedEmail){
+      this.email = savedEmail;
+      this.rememberMe = true
+    }
   }
 
   login() {
@@ -45,6 +64,7 @@ export class LoginComponent {
         let is_active = await this.authService.isUserActive(this.email)
         if (is_active) {
           this.checkUserCredentials();
+          this.checkRememberMe()
         } else {
           this.closeErrorPopup();
           this.showEmailNotActivatedPopup();
@@ -58,7 +78,11 @@ export class LoginComponent {
   async checkUserCredentials() {
     try {
       let userData: any = await this.authService.loginUser(this.email, this.password);
-      localStorage.setItem('token', userData.token);
+      if (this.rememberMe){
+        localStorage.setItem('token', userData.token);
+      } else {
+        sessionStorage.setItem('token', userData.token);
+      }
       this.router.navigate(['videos/']);
     } catch {
       this.showWrongMessage('The password does not match the username')

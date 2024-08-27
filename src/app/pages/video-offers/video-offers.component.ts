@@ -176,11 +176,13 @@ export class VideoOffersComponent {
   }
 
   logout() {
-    let token = localStorage.getItem('token')
+    // let token = localStorage.getItem('token')
+    let token = this.authService.getToken();
     if (token) {
       this.authService.logoutUser(token)
       this.router.navigate(['welcome/login/'])
       localStorage.removeItem('token')
+      sessionStorage.removeItem('token')
     }
   }
 

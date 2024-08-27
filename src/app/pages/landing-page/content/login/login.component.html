@@ -13,7 +13,7 @@
         </div>
     </form>
     <div class="remember-container">
-        <input type="checkbox">
+        <input type="checkbox" [(ngModel)]="rememberMe">
         <p class="remember">Remember Me</p>
     </div>
     <button [disabled]="!email || !password" (click)="login()" class="btn">Log in</button>
