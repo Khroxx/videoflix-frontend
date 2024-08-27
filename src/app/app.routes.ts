@@ -12,9 +12,9 @@ import { PrivacyPolicyComponent } from './shared/privacy-policy/privacy-policy.c
 import { AuthGuardService } from './services/auth-guard.service';
 
 export const routes: Routes = [
-    { path: '/', redirectTo: 'welcome', pathMatch: 'full' },
+    // { path: '/', redirectTo: 'welcome', pathMatch: 'full' },
     { path: '', redirectTo: 'welcome', pathMatch: 'full' },
-    { path: '**', redirectTo: 'welcome' },
+    // { path: '**', redirectTo: 'welcome' },
     { path: 'welcome', component: LandingPageComponent, 
         children: [
             { path: '', component: GreetingComponent },

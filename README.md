@@ -23,7 +23,14 @@ npm install
 ```bash
 ng g environment environments
 ```
-and configure your backend url
+and set local backend url to:
+```bash
+baseUrl: 'http://127.0.0.1:8000'
+```
+or use this projects backend:
+```bash
+baseUrl: 'https://api.bari-sopa.com'
+```
 
 4. Run local host
 ```bash

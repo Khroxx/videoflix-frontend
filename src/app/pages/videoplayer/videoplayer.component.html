@@ -48,8 +48,7 @@
                 <div>
                     <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
                     <select #qualityMenu class="qualityMenu" (change)="setVideoQuality($event)">
-                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']"
-                            [value]="quality">
+                        <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']">
                             {{ quality }}
                         </option>
                     </select>

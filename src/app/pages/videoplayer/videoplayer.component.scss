@@ -50,13 +50,9 @@ img {
     position: absolute;
     width: 100%;
     height: 100%;
-    // width: 100dvw;
-    // height: 100dvh;
 }
 
 footer {
-    // display: flex;
-    // display: none;
     flex-direction: column;
     gap: 16px;
     padding: 0 32px 10px 32px;
@@ -76,7 +72,6 @@ footer {
     .timebar {
         width: 100%;
         height: 8px;
-        // border-radius: 100px 0 0 100px;
         position: relative;
 
         .timebar-background {
@@ -91,8 +86,10 @@ footer {
             top: 0;
             left: 0;
             height: 100%;
-            background-color: #b58585;
+            z-index: 3;
+            background-color: #2E3EDF;
             width: 0%;
+            transition: width 0.2s ease;
         }
     }
 
@@ -130,7 +127,6 @@ button {
     background-color: rgba(0, 0, 0, 0);
     border: unset;
 
-    // animation: 
     &:hover {
         scale: 1.2;
     }
@@ -140,7 +136,6 @@ button {
     position: absolute;
     height: 100%;
     width: 100%;
-    // display: flex;
     align-items: flex-start;
     justify-content: space-between;
     z-index: 5;
@@ -152,22 +147,6 @@ button {
 
 .show {
     display: flex;
-}
-
-.p180p {
-    width: 320px;
-    height: 180px;
-}
-
-.p480 {
-    width: 854px;
-    height: 480px;
-}
-
-.p720 {
-    width: 1280px;
-    height: 720px;
-
 }
 
 .p1080 {
@@ -235,6 +214,9 @@ button:active{
     position: absolute;
     bottom: 150px;
     display: none;
+    background-color: #2E3EDF;
+    border: 1px solid white;
+    border-radius: 4px;
 }
 
 .speed-selection,
@@ -251,12 +233,12 @@ button:active{
     }
 }
 
-#qualityMenu {
-    position: absolute;
-    bottom: 150px;
-    left: -40px;
-    display: none;
-}
+// #qualityMenu {
+//     position: absolute;
+//     bottom: 150px;
+//     left: -40px;
+//     display: none;
+// }
 
 .loading {
     display: flex;
