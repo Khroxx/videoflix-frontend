@@ -55,8 +55,9 @@
                 </div>
                 <div>
                     <button (click)="changePlaybackSpeed()"><img src="img/speed.png" alt=""></button>
-                    <select #speedMenu class="speedMenu" (change)="setPlaybackSpeed($event)">
-                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">
+                    <select #speedMenu class="speedMenu" (change)="setPlaybackSpeed($event)" [value]="1">
+                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]"
+                        [value]="speed" [selected]="speed === 1">
                             {{ speed }}x</option>
                     </select>
                 </div>
@@ -94,6 +95,7 @@
                 <div>
                     <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
                     <select #qualityMenu class="qualityMenu" (change)="setVideoQuality($event)">
+                        <option class="quality-selection" value="auto" selected>Auto</option>
                         <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']"
                             [value]="quality">
                             {{ quality }}
@@ -103,7 +105,8 @@
                 <div>
                     <button (click)="changePlaybackSpeed()"><img src="img/speed.png" alt=""></button>
                     <select #speedMenu class="speedMenu" (change)="setPlaybackSpeed($event)">
-                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]" [value]="speed">
+                        <option class="speed-selection" *ngFor="let speed of [0.5, 1, 1.5, 2, 3]"
+                         [value]="speed" [selected]="speed === 1">
                             {{ speed }}x</option>
                     </select>
                 </div>

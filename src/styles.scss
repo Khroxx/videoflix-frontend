@@ -270,6 +270,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     }
 }
 .vjs-progress-control{
+    display: none;
     position: fixed;
     top: 100px;
     left: 50%;
@@ -291,6 +292,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
     }
     .vjs-progress-control{
         top: 20px;
+        // top: 5%;
     }
 }
 
@@ -306,6 +308,7 @@ app-login, app-forgot-password, app-signup, app-reset-password{
         left: 89%;
     }
     .vjs-progress-control{
+        display: block;
         top: 20px;
     }
 }

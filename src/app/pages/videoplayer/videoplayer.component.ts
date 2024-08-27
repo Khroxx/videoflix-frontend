@@ -218,6 +218,7 @@ export class VideoplayerComponent {
         currentTime = this.player.currentTime();
       } 
       this.player.currentTime(currentTime);
+      this.changeQualityofVideo();
     }
   }
 
@@ -235,7 +236,8 @@ export class VideoplayerComponent {
   setPlaybackSpeed(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const speed = parseFloat(selectElement.value);
-    this.player.playbackRate(speed)
+    this.player.playbackRate(speed);
+    this.changePlaybackSpeed();
   }
 
   closeVideo() {

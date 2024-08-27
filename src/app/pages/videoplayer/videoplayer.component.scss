@@ -217,6 +217,7 @@ button:active{
     background-color: #2E3EDF;
     border: 1px solid white;
     border-radius: 4px;
+    color: white;
 }
 
 .speed-selection,
@@ -233,12 +234,6 @@ button:active{
     }
 }
 
-// #qualityMenu {
-//     position: absolute;
-//     bottom: 150px;
-//     left: -40px;
-//     display: none;
-// }
 
 .loading {
     display: flex;
