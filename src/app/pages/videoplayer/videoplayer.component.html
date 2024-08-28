@@ -91,11 +91,10 @@
                 {{ currentVideo?.title || 'Movie Name' }}
             </h1>
             <div class="screen-buttons">
-                <!-- <button (click)="toggle    Subtitles()"><img src="img/subtitles.png" alt=""></button> -->
                 <div>
                     <button class="hd-icon" (click)="changeQualityofVideo()"><img src="img/hd.png" alt=""></button>
                     <select #qualityMenu class="qualityMenu" (change)="setVideoQuality($event)">
-                        <option class="quality-selection" value="auto" selected>Auto</option>
+                        <option class="quality-selection" value="auto" selected (click)="getHLSPlaylist(currentVideo!.title)">Auto</option>
                         <option class="quality-selection" *ngFor="let quality of ['480p', '720p', '1080p']"
                             [value]="quality">
                             {{ quality }}
