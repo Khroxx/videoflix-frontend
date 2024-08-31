@@ -3,10 +3,11 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { VideoService } from '../../services/video.service';
 import { Video } from '../../interfaces/video';
-import { environment } from '../../../environments/environment';
+// import { environment } from '../../../environments/environment';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-video-offers',

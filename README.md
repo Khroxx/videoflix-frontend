@@ -23,19 +23,16 @@ npm install
 ```bash
 ng g environments
 ```
-and set local backend url to:
+and go to environment.development.ts and type:
 ```bash
 baseUrl: 'http://127.0.0.1:8000'
 ```
-or use this projects backend:
-```bash
-baseUrl: 'https://api.bari-sopa.com'
-```
-
 4. Run local host
 ```bash
 ng s
 ```
+
+
 
 # Compodoc documentation
 If you're interested in documentation: <br>
@@ -43,4 +40,4 @@ https://bari-sopa.com/docs/frontend/videoflix/
 
 ## Information
 STARTED : 14.07.24 <br>
-FINISHED : .08.2024
+FINISHED : TBF
