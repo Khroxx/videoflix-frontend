@@ -115,7 +115,7 @@ export class LoginComponent {
 
     setTimeout(() => {
       this.closeErrorPopup()
-    }, 3000);
+    }, 6000);
   }
 
   closePopup() {

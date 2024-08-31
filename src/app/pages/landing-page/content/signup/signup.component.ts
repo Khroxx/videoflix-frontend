@@ -60,35 +60,46 @@ export class SignupComponent {
 
 
   async sendVerificationEmail() {
-    this.againError = false;
-    this.showWrongMessage('A verification email has been sent to you. Please check your inbox or junk folder')
-    let resp: any = await this.authService.registerUser(this.email, this.password1);
-    setTimeout(() => {
-      this.router.navigate(['welcome/login'])
-    }, 2000);
+    try {
+      this.againError = false;
+      let resp: any = await this.authService.registerUser(this.email, this.password1);
+      console.log(resp)
+      this.showWrongMessage('A verification email has been sent to you. Please check your inbox or junk folder')
+      setTimeout(() => {
+        this.router.navigate(['welcome/login'])
+      }, 2000);
+    } 
+    catch (error){
+      console.log(error)
+    }
   }
 
   showWrongMessage(message: string) {
     this.wrongMsg = message;
-    this.renderer.setStyle(this.errorMsg.nativeElement, 'left', '50px')
+    this.renderer.setStyle(this.errorMsg.nativeElement, 'display', 'flex')
+    setTimeout(() => {
+      this.renderer.setStyle(this.errorMsg.nativeElement, 'left', '50px')
+    }, 100);
     setTimeout(() => {
       this.closeErrorPopup()
-    }, 3000);
+    }, 6000);
   }
 
   closeErrorPopup() {
     this.renderer.setStyle(this.errorMsg.nativeElement, 'left', '-100%')
+    setTimeout(() => {
+      this.renderer.setStyle(this.errorMsg.nativeElement, 'display', 'flex')
+    }, 100);
   }
 
-  showPassword(){
+  showPassword() {
     this.passwordInput.forEach((password) => {
       let input = password.nativeElement;
-      if (input.type === 'password'){
+      if (input.type === 'password') {
         input.type = 'text';
       } else {
         input.type = 'password';
       }
-
     })
   }
 }

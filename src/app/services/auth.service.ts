@@ -117,15 +117,4 @@ export class AuthService {
     const response = await lastValueFrom(this.http.get<Csrftoken>(url));
     return response;
   }
-
-  // public async fetchCSRFToken() {
-  //   const url = environment.baseUrl + '/get-csrf-token/';
-  //   let resp = this.http.get<({ csrf_token: string })>(url).subscribe({
-  //     next: (response) => {
-  //       localStorage.setItem('csrf-token', response.csrf_token)
-  //     },
-
-  //     error: (error) => { console.error('couldnt fetch csrf token', error) }
-  //   })
-  // }
 }

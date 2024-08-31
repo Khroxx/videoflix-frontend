@@ -74,12 +74,6 @@ export class VideoplayerComponent {
     }
   }
 
-  async ngAfterViewInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.landscapeFullscreen();
-    }
-  }
-
   ngOnDestroy(): void {
     this.stopUpdatingTimebar();
     if (this.player) {
@@ -353,30 +347,17 @@ export class VideoplayerComponent {
     this.renderer.setStyle(this.videoContainer.nativeElement, 'height', '180px');
     this.renderer.removeClass(this.popupControls.nativeElement, 'hidden');
     this.renderer.addClass(this.popupControls.nativeElement, 'show');
-    if (this.loadingSpinner) {
-      this.renderer.removeClass(this.loadingSpinner.nativeElement, 'spinner-fullscreen')
+    if (window.innerWidth < 1024 && window.innerHeight < window.innerWidth) {
+      this.showMobileControls('none');
     }
   }
 
   enterFullscreen() {
-    this.renderer.setStyle(this.videoContainer.nativeElement, 'width', '100dvw');
-    this.renderer.setStyle(this.videoContainer.nativeElement, 'height', '100dvh');
-    if (this.loadingSpinner) {
-      this.renderer.addClass(this.loadingSpinner.nativeElement, 'spinner-fullscreen');
-    }
-  }
-
-  landscapeFullscreen() {
     if (window.innerWidth < 1024 && window.innerHeight < window.innerWidth) {
-      this.videoContainer.nativeElement.requestFullscreen();
       this.showMobileControls('flex');
     }
-    else if (document.fullscreenElement) {
-      document.exitFullscreen();
-      this.showMobileControls('none');
-      this.renderer.removeClass(this.popupControls.nativeElement, 'show');
-      this.renderer.addClass(this.popupControls.nativeElement, 'hidden');
-    }
+    this.renderer.setStyle(this.videoContainer.nativeElement, 'width', '100dvw');
+    this.renderer.setStyle(this.videoContainer.nativeElement, 'height', '100dvh');
   }
 
   @HostListener('document:mousemove', ['$event'])
@@ -386,6 +367,15 @@ export class VideoplayerComponent {
       this.resetHideControlsTimer();
       this.renderer.removeClass(this.popupControls.nativeElement, 'show');
       this.renderer.addClass(this.popupControls.nativeElement, 'hidden');
+      if (window.innerWidth > window.innerHeight && window.innerWidth < 1024) {
+        this.showMobileControls('flex');
+      }
+      if (window.innerWidth > window.innerHeight && window.innerWidth > 1024){
+        this.showMobileControls('none')
+      } 
+      if (window.innerWidth > window.innerHeight && window.innerWidth <= 320){
+        this.showMobileControls('none')
+      }
     } else {
       this.hideControls();
     }
@@ -404,13 +394,16 @@ export class VideoplayerComponent {
     }
   }
 
-  @HostListener('window:resize')
-  onResize() {
-    if (window.innerWidth > window.innerHeight && window.innerWidth < 1024) {
-      this.landscapeFullscreen();
-    } 
-    else if (window.innerWidth < window.innerHeight && window.innerWidth < 1024){
-      document.exitFullscreen();
-    }
-  }
+  // @HostListener('window:resize')
+  // onResize() {
+  //   if (window.innerWidth > window.innerHeight && window.innerWidth < 1024) {
+  //     this.showMobileControls('flex');
+  //   }
+  //   if (window.innerWidth > window.innerHeight && window.innerWidth > 1024){
+  //     this.showMobileControls('none')
+  //   } 
+  //   if (window.innerWidth > window.innerHeight && window.innerWidth <= 320){
+  //     this.showMobileControls('none')
+  //   }
+  // }
 } 

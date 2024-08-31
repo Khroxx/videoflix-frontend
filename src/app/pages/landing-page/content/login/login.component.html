@@ -3,9 +3,6 @@
     <form #loginForm="ngForm">
         <div>
             <input type="email" placeholder="Email Address" [(ngModel)]="email" name="email" class="p-input">
-            @if(activated){
-                <p class="black">Your account has been activated, please log in</p>
-            }
         </div>
         <div>
             <input #passwordInput type="password" name="login-pw" id="login-pw" placeholder="Password" [(ngModel)]="password" name="password" class="p-input">

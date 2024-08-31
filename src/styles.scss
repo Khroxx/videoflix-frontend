@@ -242,15 +242,18 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 
 .vjs-control-bar{
     position: absolute;
-    bottom: 85px;
-    width: 100dvw;
+    // bottom: 85px;
+    // width: 100dvw;
+    // width: ;
+    right: 0;
+    bottom: 75px;
     display: flex;
     flex-direction: row;
 }
 
 .vjs-current-time {
     position: relative;
-    left: 93dvw;
+    // left: 93dvw;
     >.vjs-control-text{
         display: none !important;
     }
@@ -258,12 +261,12 @@ app-login, app-forgot-password, app-signup, app-reset-password{
 
 .vjs-time-control{
     position: relative;
-    left: 93dvw;
+    // left: 93dvw;
 
 }
 .vjs-duration{
     position: relative;
-    left: 93dvw;
+    // left: 93dvw;
 
     >.vjs-control-text{
         display: none !important;

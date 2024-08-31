@@ -181,6 +181,7 @@ export class VideoOffersComponent {
       this.authService.logoutUser(token)
       this.router.navigate(['welcome/login/'])
       localStorage.removeItem('token')
+      localStorage.removeItem('currentPreview')
       sessionStorage.removeItem('token')
     }
   }
