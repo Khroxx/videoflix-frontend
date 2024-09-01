@@ -63,7 +63,6 @@ export class SignupComponent {
     try {
       this.againError = false;
       let resp: any = await this.authService.registerUser(this.email, this.password1);
-      console.log(resp)
       this.showWrongMessage('A verification email has been sent to you. Please check your inbox or junk folder')
       setTimeout(() => {
         this.router.navigate(['welcome/login'])
