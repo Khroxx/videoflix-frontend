@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { SharedFunctionsService } from '../../../../services/shared-functions.service';
+import { set } from 'video.js/dist/types/tech/middleware';
 
 @Component({
   selector: 'app-login',
@@ -33,9 +34,11 @@ export class LoginComponent {
   ngOnInit(): void {
     this.sharedService.updateBackgroundImage('img/login.jpeg');
     this.route.queryParams.subscribe(params => {
-      if (params['activated']) {
+      if (params['activated'] === 'true') {
         this.activated = params['activated'] === 'true';
         this.showWrongMessage('Your account has been activated, please log in')
+      } if(params['activated'] === 'false')  {
+        this.showWrongMessage('The activation token failed or expired')
       }
     });
     this.getRememberedUser();
@@ -98,6 +101,10 @@ export class LoginComponent {
       this.renderer.setStyle(this.resendEmailPopup.nativeElement, 'left', '50px')
       this.renderer.setStyle(this.resendEmailPopup.nativeElement, 'bottom', '100px')
     }
+    setTimeout(() => {
+      this.closeErrorPopup();
+      this.closePopup();
+    }, 6000);
   }
 
   showWrongMessage(message: string) {
@@ -112,7 +119,6 @@ export class LoginComponent {
         this.renderer.setStyle(this.errorMsg.nativeElement, 'left', '50px')
       }
     }, 100);
-
     setTimeout(() => {
       this.closeErrorPopup()
     }, 6000);
@@ -125,7 +131,6 @@ export class LoginComponent {
     } else {
       this.renderer.setStyle(this.resendEmailPopup.nativeElement, 'bottom', '0')
       this.renderer.setStyle(this.resendEmailPopup.nativeElement, 'left', '-200%')
-
     }
     setTimeout(() => {
       this.renderer.setStyle(this.resendEmailPopup.nativeElement, 'display', 'none')
@@ -147,6 +152,11 @@ export class LoginComponent {
 
   resendEmailActivationLink() {
     this.authService.sendEmailActivationOnly(this.email);
+    this.closeErrorPopup();
+    this.closePopup();
+    setTimeout(() => {
+      this.showWrongMessage('Email has been sent.')
+    }, 550);
   }
 
   showPassword() {

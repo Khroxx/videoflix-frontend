@@ -97,9 +97,11 @@ export class VideoplayerComponent {
   initializeVideoJsPlayer(url: string) {
     if (isPlatformBrowser(this.platformId)) {
       this.player = videojs(this.videoplayer.nativeElement, this.options);
-      this.player.autoplay(true)
-      this.player.src({src: url, type: 'application/x-mpegURL'});
-      this.isLoading = false;
+      this.player.ready(() => {
+        this.player.src({ src: url, type: 'application/x-mpegURL' });
+        this.player.play();
+        this.isLoading = false;
+      });
     }
   }
 
@@ -124,11 +126,13 @@ export class VideoplayerComponent {
   }
 
   updateTimebar() {
-    const currentTime: any = this.player.currentTime();
-    const duration: any = this.player.duration()
-    const percentage = Math.floor((currentTime / duration) * 100);
-    this.updateTime();
-    this.updateTimebarUI(percentage);
+    if (this.player && this.player.currentTime) {
+      const currentTime: any = this.player.currentTime();
+      const duration: any = this.player.duration();
+      const percentage = Math.floor((currentTime / duration) * 100);
+      this.updateTime();
+      this.updateTimebarUI(percentage);
+    }
   }
 
   updateTimebarUI(percentage: number) {
