@@ -6,6 +6,9 @@ footer{
     gap: 48px;
     padding: 10px;
     margin-bottom: 50px;
+    a{
+        cursor: pointer;
+    }
 }
 @media (orientation: landscape){
     footer{
