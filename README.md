@@ -3,6 +3,9 @@ This is basically a Netflix clone. The Frontend variant of my Project written wi
 Register yourself, activate via the email that will be sent to you. Login to watch Movies. Reset and change your password. <br>
 Seeminglessly change between different qualities when watching the HLS converted Videos. <br>
 
+# Compodoc documentation
+If you're interested in documentation: <br>
+https://bari-sopa.com/docs/frontend/videoflix/
 
 # Prerequisites
 must haves: <br>
@@ -33,11 +36,6 @@ ng s
 ```
 
 
-
-# Compodoc documentation
-If you're interested in documentation: <br>
-https://bari-sopa.com/docs/frontend/videoflix/
-
 ## Information
 STARTED : 14.07.24 <br>
-FINISHED : TBF
+FINISHED : 02.09.24
